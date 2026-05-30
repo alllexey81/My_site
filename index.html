@@ -142,7 +142,7 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
 .hero-meta{display:flex;gap:28px;margin-top:38px;flex-wrap:wrap}
 .hero-meta .item{display:flex;flex-direction:column}
-.hero-meta .num{font-family:'Unbounded';font-size:1.5rem;font-weight:700}
+.hero-meta .num{font-family:'Unbounded';font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;font-feature-settings:"tnum";white-space:nowrap}
 .hero-meta .lbl{font-size:.82rem;color:var(--muted)}
 
 /* Фото героя (с graceful-фолбэком на градиент+инициалы) */
@@ -207,7 +207,7 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
   transition:border-color .25s,transform .25s var(--ease);
 }
 .stat:hover{border-color:var(--border-glow);transform:translateY(-3px)}
-.stat .num{font-family:'Unbounded';font-size:2.2rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .num{font-family:'Unbounded';font-size:2.2rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums;font-feature-settings:"tnum";white-space:nowrap;display:block;min-height:1.15em}
 .stat .lbl{color:var(--muted);font-size:.9rem;margin-top:4px}
 @media(max-width:880px){.about-grid{grid-template-columns:1fr;gap:36px}}
 
@@ -468,11 +468,20 @@ footer{border-top:1px solid var(--border);padding:72px 0 40px;background:var(--b
 .notice strong{color:var(--text);font-weight:700}
 .notice-center{max-width:680px;margin:36px auto 0}
 .contact-methods{display:flex;gap:10px;flex-wrap:wrap}
-.cm-opt{flex:1;min-width:96px;display:flex;align-items:center;justify-content:center;gap:8px;
-  padding:12px 10px;border:1px solid var(--border);border-radius:11px;background:var(--bg-soft);
-  cursor:pointer;font-size:.9rem;font-weight:600;color:var(--muted-light);transition:.2s;margin:0;text-align:center}
-.cm-opt input{width:18px;height:18px;flex-shrink:0;accent-color:var(--primary);cursor:pointer}
+.cm-opt{flex:1;min-width:96px;display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 10px;border:1px solid var(--border);border-radius:11px;background:var(--bg-soft);
+  cursor:pointer;font-size:.9rem;font-weight:600;color:var(--muted-light);transition:.2s;margin:0;text-align:center;
+  line-height:1.2}
+/* прячем нативный чекбокс, рисуем свой аккуратный кружок-галочку */
+.cm-opt input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.cm-check{width:20px;height:20px;border-radius:7px;border:1.5px solid var(--border-glow);flex-shrink:0;
+  display:grid;place-items:center;transition:.2s;background:var(--bg)}
+.cm-check svg{width:13px;height:13px;opacity:0;transform:scale(.5);transition:.2s;color:#fff}
+.cm-opt:hover{border-color:var(--border-glow);color:var(--text)}
 .cm-opt:has(input:checked){border-color:var(--primary);background:var(--grad-soft);color:var(--text)}
+.cm-opt:has(input:checked) .cm-check{background:var(--grad);border-color:transparent}
+.cm-opt:has(input:checked) .cm-check svg{opacity:1;transform:scale(1)}
+.cm-opt:has(input:focus-visible){outline:2px solid var(--primary);outline-offset:2px}
 .field.cm-invalid .cm-opt{border-color:#ef4444}
 .field.cm-invalid .err-msg{display:block}
 .modal-policy{font-size:.78rem;color:var(--muted);margin-top:16px;text-align:center;line-height:1.5}
@@ -991,9 +1000,9 @@ footer{border-top:1px solid var(--border);padding:72px 0 40px;background:var(--b
         <div class="field">
           <label>Где с вами связаться? <span class="req">*</span></label>
           <div class="contact-methods">
-            <label class="cm-opt"><input type="checkbox" name="contact_via" value="Max"><span>Max</span></label>
-            <label class="cm-opt"><input type="checkbox" name="contact_via" value="Telegram"><span>Telegram</span></label>
-            <label class="cm-opt"><input type="checkbox" name="contact_via" value="Позвонить по телефону"><span>Позвонить по тел</span></label>
+            <label class="cm-opt"><input type="checkbox" name="contact_via" value="Max"><span class="cm-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span><span>Max</span></label>
+            <label class="cm-opt"><input type="checkbox" name="contact_via" value="Telegram"><span class="cm-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span><span>Telegram</span></label>
+            <label class="cm-opt"><input type="checkbox" name="contact_via" value="Позвонить по телефону"><span class="cm-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span><span>Позвонить по тел</span></label>
           </div>
           <div class="err-msg" id="cmErr">Выберите хотя бы один способ связи</div>
         </div>
