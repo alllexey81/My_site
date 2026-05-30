@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Нейро-эксперт — короткие уроки по AI с результатом</title>
+<meta name="description" content="Практические уроки по нейросетям за 10–20 минут. Конкретный результат, без воды.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Unbounded (заголовки) + Manrope (текст) — обе с полной кириллицей -->
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ ТОКЕНЫ ============ */
+:root{
+  --bg:#0A0A0F;
+  --bg-soft:#0E0E16;
+  --card:#111827;
+  --card-hover:#161f33;
+  --border:#1E293B;
+  --border-glow:#312e81;
+  --primary:#7C3AED;
+  --primary-soft:#9F67FF;
+  --cyan:#06B6D4;
+  --text:#F1F5F9;
+  --muted:#64748B;
+  --muted-light:#94A3B8;
+  --grad:linear-gradient(135deg,#7C3AED 0%,#06B6D4 100%);
+  --grad-soft:linear-gradient(135deg,rgba(124,58,237,.18),rgba(6,182,212,.12));
+  --radius:18px;
+  --radius-sm:12px;
+  --maxw:1180px;
+  --z-nav:50;
+  --z-modal:100;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Manrope',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,.font-display{font-family:'Unbounded',sans-serif;line-height:1.18;letter-spacing:-.01em;font-weight:700}
+h3,h4{font-family:'Manrope',sans-serif;font-weight:700;line-height:1.25}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+section{padding:96px 0;position:relative}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:18px;
+}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--grad)}
+.section-title{font-size:clamp(1.7rem,3.6vw,2.5rem);font-weight:700;margin-bottom:16px}
+.section-sub{color:var(--muted-light);font-size:1.05rem;max-width:560px;margin-bottom:48px}
+
+/* Декоративные «облака» подсветки */
+.glow-blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;pointer-events:none;z-index:0}
+.glow-purple{background:radial-gradient(circle,rgba(124,58,237,.4),transparent 70%)}
+.glow-cyan{background:radial-gradient(circle,rgba(6,182,212,.32),transparent 70%)}
+
+/* ============ КНОПКИ ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-family:'Manrope',sans-serif;font-weight:700;font-size:1rem;
+  padding:14px 26px;border-radius:var(--radius-sm);border:none;cursor:pointer;
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s;
+  min-height:48px;
+}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 8px 24px -8px rgba(124,58,237,.6)}
+.btn-primary:hover{box-shadow:0 12px 32px -6px rgba(124,58,237,.8);transform:translateY(-2px)}
+.btn-primary:disabled{opacity:.7;cursor:wait;transform:none}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--primary-soft);background:rgba(124,58,237,.08)}
+.btn-block{width:100%}
+
+/* ============ НАВИГАЦИЯ ============ */
+nav{
+  position:fixed;top:16px;left:16px;right:16px;z-index:var(--z-nav);
+  max-width:var(--maxw);margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;border-radius:16px;
+  background:rgba(14,14,22,.72);backdrop-filter:blur(16px);
+  border:1px solid var(--border);transition:box-shadow .3s;
+}
+nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
+.logo{font-family:'Unbounded';font-weight:700;font-size:1.02rem;display:flex;align-items:center;gap:10px}
+.logo-mark{
+  width:34px;height:34px;border-radius:9px;background:var(--grad);
+  display:grid;place-items:center;font-size:.78rem;color:#fff;flex-shrink:0;font-weight:800;
+}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-links a{
+  padding:8px 14px;border-radius:9px;font-size:.92rem;font-weight:600;color:var(--muted-light);
+  transition:color .2s,background .2s;
+}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.nav-cta{margin-left:8px}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:8px;color:var(--text)}
+@media(max-width:880px){
+  .nav-links{
+    position:absolute;top:calc(100% + 10px);left:0;right:0;flex-direction:column;align-items:stretch;
+    background:rgba(14,14,22,.97);backdrop-filter:blur(16px);border:1px solid var(--border);
+    border-radius:16px;padding:12px;gap:2px;
+    opacity:0;visibility:hidden;transform:translateY(-8px);transition:.25s var(--ease);
+  }
+  .nav-links.open{opacity:1;visibility:visible;transform:translateY(0)}
+  .nav-links a{padding:12px 14px}
+  .nav-cta{margin:6px 0 0}
+  .burger{display:block}
+}
+
+/* ============ HERO ============ */
+.hero{padding-top:160px;overflow:hidden}
+.hero-grid{
+  position:absolute;inset:0;z-index:0;opacity:.4;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:54px 54px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
+}
+.hero-glow{
+  position:absolute;top:-120px;left:50%;transform:translateX(-50%);
+  width:680px;height:480px;z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(124,58,237,.35),transparent 65%);
+  filter:blur(20px);
+}
+.hero .container{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;
+  background:var(--grad-soft);border:1px solid var(--border-glow);
+  font-size:.82rem;font-weight:600;color:var(--muted-light);margin-bottom:24px;
+}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px rgba(6,182,212,.2)}
+.hero h1{font-size:clamp(2rem,4.4vw,3.2rem);font-weight:800;margin-bottom:22px}
+.hero h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{font-size:1.12rem;color:var(--muted-light);margin-bottom:34px;max-width:520px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.hero-meta{display:flex;gap:28px;margin-top:38px;flex-wrap:wrap}
+.hero-meta .item{display:flex;flex-direction:column}
+.hero-meta .num{font-family:'Unbounded';font-size:1.5rem;font-weight:700}
+.hero-meta .lbl{font-size:.82rem;color:var(--muted)}
+
+/* Фото героя (с graceful-фолбэком на градиент+инициалы) */
+.avatar-wrap{position:relative;display:grid;place-items:center}
+.avatar{
+  width:320px;height:380px;border-radius:28px;position:relative;overflow:hidden;
+  background:var(--grad);display:grid;place-items:center;
+  font-family:'Unbounded';font-size:5rem;font-weight:800;color:#fff;
+  box-shadow:0 30px 80px -20px rgba(124,58,237,.6);
+  animation:float 6s ease-in-out infinite;
+}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.avatar::after{
+  content:"";position:absolute;inset:0;z-index:2;
+  background:linear-gradient(180deg,transparent 45%,rgba(10,10,15,.55));
+}
+.avatar-ring{
+  position:absolute;width:380px;height:440px;border:1px dashed var(--border-glow);border-radius:36px;
+  animation:spin 28s linear infinite;
+}
+.avatar-tag{
+  position:absolute;z-index:3;background:rgba(17,24,39,.92);backdrop-filter:blur(8px);border:1px solid var(--border);
+  border-radius:12px;padding:10px 14px;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:8px;
+  box-shadow:0 12px 28px -10px rgba(0,0,0,.6);
+}
+.avatar-tag.t1{top:18px;left:-26px;animation:float 5s ease-in-out infinite}
+.avatar-tag.t2{bottom:24px;right:-30px;animation:float 7s ease-in-out infinite .5s}
+.avatar-tag .ic{color:var(--cyan);display:flex}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:880px){
+  .hero .container{grid-template-columns:1fr;text-align:center}
+  .hero-meta{justify-content:center}
+  .hero-actions{justify-content:center}
+  .hero-badge{margin-inline:auto}
+  .avatar-wrap{order:-1;margin-bottom:24px}
+  .avatar{width:240px;height:300px;font-size:3.5rem}
+  .avatar-ring{width:290px;height:350px}
+}
+
+/* ============ БЕГУЩАЯ СТРОКА ИНСТРУМЕНТОВ ============ */
+.marquee{border-block:1px solid var(--border);background:var(--bg-soft);padding:22px 0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);}
+.marquee-track{display:flex;gap:46px;width:max-content;animation:scroll 32s linear infinite}
+.marquee-item{display:flex;align-items:center;gap:12px;color:var(--muted-light);font-family:'Unbounded';font-weight:600;font-size:1.1rem;white-space:nowrap}
+.marquee-item .d{width:7px;height:7px;border-radius:50%;background:var(--grad)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ============ ОБО МНЕ ============ */
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.about-text p{color:var(--muted-light);margin-bottom:18px;font-size:1.05rem}
+.about-text strong{color:var(--text)}
+.about-media{position:relative}
+.about-img{
+  width:100%;height:300px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border);
+  background:var(--grad);
+}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.stat{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px 22px;
+  transition:border-color .25s,transform .25s var(--ease);
+}
+.stat:hover{border-color:var(--border-glow);transform:translateY(-3px)}
+.stat .num{font-family:'Unbounded';font-size:2.2rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .lbl{color:var(--muted);font-size:.9rem;margin-top:4px}
+@media(max-width:880px){.about-grid{grid-template-columns:1fr;gap:36px}}
+
+/* ============ МЕДИА ============ */
+.media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.media-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:border-color .25s,transform .25s var(--ease),background .25s;cursor:pointer;
+}
+.media-card:hover{border-color:var(--border-glow);background:var(--card-hover);transform:translateY(-4px)}
+.media-banner{
+  height:120px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  color:#fff;
+}
+.media-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent 60%)}
+.media-banner svg{width:46px;height:46px;position:relative;z-index:1;filter:drop-shadow(0 4px 10px rgba(0,0,0,.3))}
+.media-banner .src-badge{position:absolute;bottom:12px;left:14px;z-index:1;font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;background:rgba(0,0,0,.35);backdrop-filter:blur(4px);
+  padding:4px 10px;border-radius:7px}
+.media-b1{background:linear-gradient(135deg,#7C3AED,#4338ca)}
+.media-b2{background:linear-gradient(135deg,#0ea5e9,#06B6D4)}
+.media-b3{background:linear-gradient(135deg,#6366f1,#06B6D4)}
+.media-b4{background:linear-gradient(135deg,#8b5cf6,#0ea5e9)}
+.media-b5{background:linear-gradient(135deg,#7C3AED,#0891b2)}
+.media-b6{background:linear-gradient(135deg,#4f46e5,#7C3AED)}
+.media-body{padding:22px 24px;display:flex;flex-direction:column;gap:12px;flex-grow:1}
+.media-card h3{font-size:1.1rem;font-weight:700}
+.media-card p{color:var(--muted-light);font-size:.92rem;flex-grow:1}
+.media-link{display:inline-flex;align-items:center;gap:6px;font-size:.9rem;font-weight:700;color:var(--primary-soft)}
+.media-link svg{transition:transform .2s}
+.media-card:hover .media-link svg{transform:translate(3px,-3px)}
+@media(max-width:880px){.media-grid{grid-template-columns:1fr}}
+
+/* ============ КАТАЛОГ УРОКОВ ============ */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px}
+.filter-btn{
+  padding:9px 18px;border-radius:999px;border:1px solid var(--border);background:transparent;
+  color:var(--muted-light);font-weight:600;font-size:.9rem;cursor:pointer;transition:.2s;font-family:'Manrope';
+}
+.filter-btn:hover{color:var(--text);border-color:var(--border-glow)}
+.filter-btn.active{background:var(--grad);color:#fff;border-color:transparent}
+/* --- Темы-«полки» --- */
+.themes-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.theme-card{
+  --c:#7C3AED;position:relative;overflow:hidden;cursor:pointer;
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--c) 13%,var(--card)),var(--card));
+  padding:26px 24px;min-height:215px;display:flex;flex-direction:column;gap:14px;
+  transition:transform .3s var(--ease),border-color .25s;
+}
+.theme-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--c),transparent)}
+.theme-card::after{content:"";position:absolute;width:140px;height:140px;border-radius:50%;
+  right:-50px;top:-50px;background:radial-gradient(circle,color-mix(in srgb,var(--c) 28%,transparent),transparent 70%);
+  filter:blur(8px);opacity:.7;transition:transform .4s var(--ease)}
+.theme-card:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--c) 55%,var(--border))}
+.theme-card:hover::after{transform:scale(1.4)}
+.theme-ic{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;position:relative;z-index:1;
+  background:color-mix(in srgb,var(--c) 18%,transparent);
+  border:1px solid color-mix(in srgb,var(--c) 45%,transparent);color:var(--c)}
+.theme-card h3{font-size:1.3rem;position:relative;z-index:1}
+.theme-tag{color:var(--muted-light);font-size:.92rem;flex-grow:1;position:relative;z-index:1}
+.theme-prices{position:relative;z-index:1}
+.from-price{font-family:'Unbounded';font-weight:700;font-size:1.15rem;color:var(--c)}
+.theme-badge{position:absolute;top:14px;right:14px;z-index:2;font-size:.72rem;font-weight:700;
+  padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.35);backdrop-filter:blur(4px);
+  border:1px solid color-mix(in srgb,var(--c) 45%,transparent);color:#fff}
+.theme-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;position:relative;z-index:1}
+.theme-open{display:inline-flex;align-items:center;gap:6px;color:var(--c);font-weight:700;font-size:.9rem}
+.theme-open svg{transition:transform .2s}
+.theme-card:hover .theme-open svg{transform:translateX(4px)}
+.count-pill{font-family:'Unbounded';font-weight:700;font-size:.85rem;
+  color:var(--c, var(--primary-soft));
+  background:color-mix(in srgb,var(--c, #7C3AED) 14%,transparent);
+  border:1px solid color-mix(in srgb,var(--c, #7C3AED) 35%,transparent);
+  padding:5px 13px;border-radius:999px;white-space:nowrap}
+/* --- Панель внутри темы --- */
+.lessons-bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:32px}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);
+  color:var(--text);padding:11px 16px;border-radius:11px;cursor:pointer;font-family:'Manrope';font-weight:600;transition:.2s}
+.back-btn:hover{border-color:var(--border-glow);background:var(--card-hover)}
+.lessons-bar-title{font-family:'Unbounded';font-weight:700;font-size:1.25rem;display:flex;align-items:center;gap:12px}
+.lessons-search{margin-left:auto;position:relative;display:flex;align-items:center}
+.lessons-search svg{position:absolute;left:14px;color:var(--muted);pointer-events:none}
+.lessons-search input{padding:11px 14px 11px 40px;border-radius:11px;border:1px solid var(--border);
+  background:var(--bg-soft);color:var(--text);font-family:inherit;font-size:.95rem;min-width:230px;transition:border-color .2s}
+.lessons-search input:focus{outline:none;border-color:var(--primary)}
+.no-results{color:var(--muted-light);text-align:center;padding:48px 0}
+@media(max-width:980px){.themes-grid{grid-template-columns:repeat(2,1fr)}.lessons-search{margin-left:0;width:100%}.lessons-search input{width:100%}}
+@media(max-width:540px){.themes-grid{grid-template-columns:1fr}}
+.lessons-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.lesson-card{
+  --cat:#7C3AED;
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:linear-gradient(180deg,color-mix(in srgb,var(--cat) 7%,var(--card)),var(--card));
+  padding:24px;display:flex;flex-direction:column;gap:13px;position:relative;overflow:hidden;
+  transition:border-color .25s,transform .3s var(--ease);
+}
+.lesson-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--cat),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease);
+}
+.lesson-card:hover{border-color:color-mix(in srgb,var(--cat) 45%,var(--border));transform:translateY(-5px)}
+.lesson-card:hover::before{transform:scaleX(1)}
+.ribbon{position:absolute;top:0;right:0;z-index:3;font-size:.72rem;font-weight:800;letter-spacing:.02em;
+  padding:6px 14px;border-bottom-left-radius:12px;color:#fff;box-shadow:0 4px 12px -4px rgba(0,0,0,.5)}
+.ribbon-hit{background:linear-gradient(135deg,#f59e0b,#ef4444)}
+.ribbon-new{background:linear-gradient(135deg,#06B6D4,#7C3AED)}
+.lesson-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lesson-ic{width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  background:color-mix(in srgb,var(--cat) 16%,transparent);
+  border:1px solid color-mix(in srgb,var(--cat) 40%,transparent);
+  display:grid;place-items:center;color:var(--cat)}
+.lesson-tags{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.tag{
+  font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:7px;
+  background:color-mix(in srgb,var(--cat) 14%,transparent);
+  color:var(--cat);border:1px solid color-mix(in srgb,var(--cat) 35%,transparent);
+}
+.lesson-card h3{font-size:1.18rem;font-weight:700;line-height:1.3}
+.lesson-card .desc{color:var(--muted-light);font-size:.94rem;flex-grow:1}
+.lesson-meta{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.86rem}
+.lesson-meta svg{color:var(--cyan)}
+.lesson-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px;padding-top:18px;border-top:1px solid var(--border)}
+.price{font-family:'Unbounded';font-size:1.6rem;font-weight:700}
+.price span{font-size:1rem;color:var(--muted-light);font-weight:500}
+.lesson-foot .btn{padding:11px 18px;font-size:.92rem}
+@media(max-width:980px){.lessons-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.lessons-grid{grid-template-columns:1fr}}
+
+/* ============ КАК ЭТО РАБОТАЕТ ============ */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.step{position:relative;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:34px 28px;transition:border-color .25s,transform .25s var(--ease)}
+.step:hover{border-color:var(--border-glow);transform:translateY(-4px)}
+.step-num{
+  font-family:'Unbounded';font-size:.85rem;font-weight:700;width:38px;height:38px;border-radius:11px;
+  background:var(--grad);color:#fff;display:grid;place-items:center;margin-bottom:20px;
+}
+.step-icon{color:var(--cyan);margin-bottom:14px}
+.step h3{font-size:1.18rem;margin-bottom:8px}
+.step p{color:var(--muted-light);font-size:.95rem}
+.step:not(:last-child)::after{
+  content:"";position:absolute;top:52px;right:-16px;width:32px;height:1px;
+  background:linear-gradient(90deg,var(--border-glow),transparent);
+}
+@media(max-width:880px){.steps{grid-template-columns:1fr}.step:not(:last-child)::after{display:none}}
+
+/* ============ FAQ ============ */
+.faq-wrap{max-width:760px}
+.faq-item{border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:14px;background:var(--card);overflow:hidden;transition:border-color .25s}
+.faq-item.open{border-color:var(--border-glow)}
+.faq-q{
+  width:100%;text-align:left;background:none;border:none;cursor:pointer;color:var(--text);
+  font-family:'Manrope';font-weight:700;font-size:1.06rem;padding:20px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.faq-q .chev{flex-shrink:0;transition:transform .3s var(--ease);color:var(--primary-soft)}
+.faq-item.open .chev{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s var(--ease)}
+.faq-a p{padding:0 24px 22px;color:var(--muted-light);font-size:.98rem}
+
+/* ============ ОБУЧЕНИЕ (СКРЫТАЯ СЕКЦИЯ) ============ */
+/* ОБУЧЕНИЕ: заменить на display:block когда готово. Также раскомментировать пункт в навигации */
+.hidden-section{display:none}
+.training-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.training-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;gap:12px}
+.training-card .fmt{font-size:.78rem;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:.05em}
+.training-card h3{font-size:1.25rem}
+.training-card ul{list-style:none;color:var(--muted-light);font-size:.94rem;display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.training-card li{display:flex;gap:9px;align-items:flex-start}
+.training-card li svg{color:var(--primary-soft);flex-shrink:0;margin-top:3px}
+.training-card .price{margin:8px 0}
+@media(max-width:880px){.training-grid{grid-template-columns:1fr}}
+
+/* ============ ПОДВАЛ ============ */
+footer{border-top:1px solid var(--border);padding:72px 0 40px;background:var(--bg-soft)}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:start;margin-bottom:48px}
+.foot-about p{color:var(--muted-light);margin-top:16px;max-width:420px}
+.foot-contacts h4{font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:18px;font-family:'Manrope';font-weight:700}
+.socials{display:flex;flex-direction:column;gap:12px}
+.social{
+  display:flex;align-items:center;gap:12px;color:var(--muted-light);font-weight:600;font-size:.95rem;
+  padding:11px 16px;border:1px solid var(--border);border-radius:11px;transition:.2s;
+  width:100%;max-width:300px;cursor:pointer;font-family:'Manrope';text-align:left;background:none;
+}
+.social .copy-hint{margin-left:auto;font-size:.78rem;color:var(--cyan);opacity:0;transition:opacity .2s}
+.social.copied .copy-hint{opacity:1}
+.social.copied{border-color:var(--cyan)}
+.social:hover{color:var(--text);border-color:var(--border-glow);background:rgba(124,58,237,.06)}
+.social .ic{width:34px;height:34px;border-radius:9px;background:var(--bg);display:grid;place-items:center;flex-shrink:0}
+.foot-bottom{border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.86rem}
+@media(max-width:880px){.foot-grid{grid-template-columns:1fr;gap:36px}}
+
+/* ============ МОДАЛКА ============ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:var(--z-modal);background:rgba(5,5,10,.78);backdrop-filter:blur(6px);
+  display:grid;place-items:center;padding:20px;
+  opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;
+}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal{
+  background:var(--card);border:1px solid var(--border-glow);border-radius:22px;
+  width:100%;max-width:460px;padding:32px;position:relative;
+  box-shadow:0 40px 90px -24px rgba(0,0,0,.8);
+  transform:translateY(16px) scale(.98);transition:transform .3s var(--ease);
+  max-height:92vh;overflow-y:auto;overflow-x:hidden; /* фикс лишней горизонтальной полосы */
+}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal-close{
+  position:absolute;top:18px;right:18px;background:var(--bg-soft);border:1px solid var(--border);
+  width:36px;height:36px;border-radius:10px;color:var(--muted-light);cursor:pointer;display:grid;place-items:center;transition:.2s;
+}
+.modal-close:hover{color:var(--text);border-color:var(--border-glow)}
+.modal h3{font-size:1.5rem;margin-bottom:6px;font-family:'Unbounded';font-weight:700}
+.modal-eyebrow{color:var(--cyan);font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+/* Сводка урока — цена вынесена в подсвеченный бейдж */
+.modal-summary{
+  background:var(--grad-soft);border:1px solid var(--border-glow);border-radius:var(--radius-sm);
+  padding:16px;margin:20px 0;display:flex;justify-content:space-between;align-items:center;gap:14px;
+}
+.modal-summary .l-name{font-weight:600;font-size:.96rem;flex:1;color:var(--text)}
+.modal-summary .l-price{
+  font-family:'Unbounded';font-size:1.3rem;font-weight:800;white-space:nowrap;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  padding:6px 12px;border-radius:10px;border:1px solid var(--border-glow);background-color:rgba(124,58,237,.08);
+}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.88rem;font-weight:600;margin-bottom:7px;color:var(--muted-light)}
+.field label .req{color:var(--primary-soft)}
+.field input{
+  width:100%;padding:13px 15px;border-radius:11px;border:1px solid var(--border);
+  background:var(--bg-soft);color:var(--text);font-family:inherit;font-size:.98rem;transition:border-color .2s;
+}
+.field input::placeholder{color:var(--muted)}
+.field input:focus{outline:none;border-color:var(--primary)}
+.field input.error{border-color:#ef4444}
+.field input.valid{border-color:#22c55e}
+.field .err-msg{color:#f87171;font-size:.82rem;margin-top:6px;display:none}
+.field input.error~.err-msg{display:block}
+.radio-group{display:flex;gap:10px;flex-wrap:wrap}
+.radio-opt{flex:1;min-width:90px;position:relative}
+.radio-opt input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.radio-opt label{
+  display:flex;align-items:center;justify-content:center;gap:7px;padding:12px 8px;border-radius:11px;
+  border:1px solid var(--border);background:var(--bg-soft);cursor:pointer;font-size:.92rem;font-weight:600;
+  color:var(--muted-light);transition:.2s;margin:0;
+}
+.radio-opt input:checked+label{border-color:var(--primary);background:var(--grad-soft);color:var(--text)}
+.radio-opt input:focus-visible+label{outline:2px solid var(--primary);outline-offset:2px}
+.notice{display:flex;gap:10px;align-items:flex-start;background:rgba(124,58,237,.08);
+  border:1px solid var(--border-glow);border-radius:12px;padding:13px 15px;font-size:.84rem;
+  color:var(--muted-light);line-height:1.5}
+.notice svg{color:var(--primary-soft);flex-shrink:0;margin-top:1px}
+.notice strong{color:var(--text);font-weight:700}
+.notice-center{max-width:680px;margin:36px auto 0}
+.modal-policy{font-size:.78rem;color:var(--muted);margin-top:16px;text-align:center;line-height:1.5}
+.modal-policy a{color:var(--primary-soft)}
+.modal-success{text-align:center;padding:24px 8px}
+.modal-success .check{
+  width:72px;height:72px;border-radius:50%;background:var(--grad);display:grid;place-items:center;margin:0 auto 22px;
+  animation:pop .4s var(--ease);
+}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-success h3{margin-bottom:10px}
+.modal-success p{color:var(--muted-light);margin-bottom:20px}
+.success-links{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.success-links a{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:10px;border:1px solid var(--border-glow);
+  background:var(--grad-soft);color:var(--text);font-size:.86rem;font-weight:600;transition:.2s}
+.success-links a:hover{background:rgba(124,58,237,.18)}
+
+/* ============ АНИМАЦИИ ПОЯВЛЕНИЯ ============ */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ НАВИГАЦИЯ ============ -->
+<nav id="nav">
+  <a href="#hero" class="logo"><span class="logo-mark">АС</span>Нейро<span style="color:var(--primary-soft)">.</span>Эксперт</a>
+  <div class="nav-links" id="navLinks">
+    <a href="#about">Обо мне</a>
+    <a href="#media">Медиа</a>
+    <a href="#lessons">Уроки</a>
+    <a href="#how">Как это работает</a>
+    <a href="#faq">FAQ</a>
+    <!-- ОБУЧЕНИЕ: раскомментировать когда раздел готов
+    <a href="#training">Обучение</a>
+    -->
+    <a href="#lessons" class="btn btn-primary nav-cta">Выбрать урок</a>
+  </div>
+  <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div>
+      <span class="hero-badge"><span class="dot"></span>Уроки по нейросетям с гарантией результата</span>
+      <h1>Нейросети без воды. <span class="grad">Конкретный результат за 20 минут.</span></h1>
+      <p class="hero-sub">Я беру одну реальную задачу — и показываю, как решить её с помощью AI. Без часовых курсов и теории. Посмотрел урок → получил результат → применил сегодня.</p>
+      <div class="hero-actions">
+        <a href="#lessons" class="btn btn-primary">Смотреть уроки
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#about" class="btn btn-ghost">Кто я такой</a>
+      </div>
+      <div class="hero-meta">
+        <div class="item"><span class="num" data-count="6">0</span><span class="lbl">лет в AI</span></div>
+        <div class="item"><span class="num" data-count="4200" data-suffix="+">0</span><span class="lbl">учеников</span></div>
+        <div class="item"><span class="num" data-count="50" data-suffix="+">0</span><span class="lbl">уроков-решений</span></div>
+      </div>
+    </div>
+    <div class="avatar-wrap">
+      <div class="avatar-ring"></div>
+      <div class="avatar">
+        АС
+        <img src="images/my-photo.jpg"
+             alt="Фотография нейро-эксперта" loading="eager"
+             onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80'}else{this.style.display='none'}">
+      </div>
+      <span class="avatar-tag t1"><span class="ic">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1L12 16.8 5.7 21l2.3-7.1-6-4.5h7.6z"/></svg>
+      </span>GPT • Nano Banana • Suno</span>
+      <span class="avatar-tag t2"><span class="ic">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      </span>Практика, а не теория</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ БЕГУЩАЯ СТРОКА ИНСТРУМЕНТОВ ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marquee">
+    <!-- наполняется из JS (дублируется для бесшовности) -->
+  </div>
+</div>
+
+<!-- ============ ОБО МНЕ ============ -->
+<section id="about">
+  <div class="glow-blob glow-purple" style="width:340px;height:340px;top:80px;right:-80px"></div>
+  <div class="container">
+    <span class="eyebrow reveal">Обо мне</span>
+    <h2 class="section-title reveal">Я не гуру. Я тот, кто разобрался первым<br>и теперь экономит вам время.</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>Шесть лет назад я залез в нейросети из любопытства — а остался, потому что увидел, как они <strong>реально меняют работу</strong>: маркетолога, предпринимателя, креатора. Не «когда-нибудь в будущем», а прямо сейчас.</p>
+        <p>За это время я перепробовал сотни инструментов, слил кучу денег на бесполезные подписки и набил все шишки, которые можно. <strong>Чтобы вам не пришлось.</strong></p>
+        <p>Я не верю в курсы на 40 часов, после которых ничего не меняется. Верю в короткие уроки-решения: одна задача — один результат. Написать тексты, сгенерить картинки, сделать музыку, автоматизировать рутину. Просто, дерзко и по делу.</p>
+        <p>Если вы новичок — я объясню так, что поймёт даже ваша бабушка. Если профи — дам фишки, до которых вы бы дошли через полгода.</p>
+      </div>
+      <div class="about-media reveal">
+        <img class="about-img" alt="Рабочее пространство с нейросетями"
+             src="images/about.jpg"
+             onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=700&q=80'}else{this.style.display='none'}">
+        <div class="stats">
+          <div class="stat"><div class="num" data-count="4200" data-suffix="+">0</div><div class="lbl">человек обучил</div></div>
+          <div class="stat"><div class="num" data-count="98" data-suffix="%">0</div><div class="lbl">доходят до результата</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ МЕДИА И ПУБЛИКАЦИИ ============ -->
+<section id="media">
+  <div class="container">
+    <span class="eyebrow reveal">Медиа и публикации</span>
+    <h2 class="section-title reveal">Где меня можно почитать и послушать</h2>
+    <p class="section-sub reveal">Интервью, статьи и эфиры — если хотите познакомиться поближе перед тем, как брать урок.</p>
+    <div class="media-grid">
+      <!-- YouTube -->
+      <a href="#" class="media-card reveal" target="_blank" rel="noopener">
+        <div class="media-banner media-b1">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 00-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 00-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 002 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 002-2C23 15.8 23 12 23 12zM10 15.5v-7l6 3.5z"/></svg>
+          <span class="src-badge">YouTube</span>
+        </div>
+        <div class="media-body">
+          <h3>«AI заменит маркетологов?» — большое интервью</h3>
+          <p>Разобрали по полочкам, какие задачи нейросети уже делают лучше человека, а где без вас никак.</p>
+          <span class="media-link">Смотреть
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </span>
+        </div>
+      </a>
+      <!-- VC -->
+      <a href="#" class="media-card reveal" target="_blank" rel="noopener">
+        <div class="media-banner media-b2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M8 9l3 6 5-8"/></svg>
+          <span class="src-badge">VC.ru</span>
+        </div>
+        <div class="media-body">
+          <h3>10 нейросетей, которые окупаются за неделю</h3>
+          <p>Колонка с разбором инструментов для бизнеса: что внедрить, чтобы реально сэкономить часы и деньги.</p>
+          <span class="media-link">Читать
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </span>
+        </div>
+      </a>
+      <!-- Habr -->
+      <a href="#" class="media-card reveal" target="_blank" rel="noopener">
+        <div class="media-banner media-b3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8v8M16 8v8M8 12h8"/></svg>
+          <span class="src-badge">Habr</span>
+        </div>
+        <div class="media-body">
+          <h3>Промпт-инжиниринг: гайд для тех, кто устал гуглить</h3>
+          <p>Техническая статья о том, как формулировать запросы, чтобы нейросеть понимала вас с первого раза.</p>
+          <span class="media-link">Читать
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </span>
+        </div>
+      </a>
+      <!-- Подкаст -->
+      <a href="#" class="media-card reveal" target="_blank" rel="noopener">
+        <div class="media-banner media-b4">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4"/></svg>
+          <span class="src-badge">Подкаст</span>
+        </div>
+        <div class="media-body">
+          <h3>«Цифровой человек» — выпуск про нейро-креатив</h3>
+          <p>Час разговора о том, как творческие профессии меняются с приходом генеративного AI.</p>
+          <span class="media-link">Слушать
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </span>
+        </div>
+      </a>
+      <!-- VK Видео -->
+      <a href="#" class="media-card reveal" target="_blank" rel="noopener">
+        <div class="media-banner media-b5">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/></svg>
+          <span class="src-badge">VK Видео</span>
+        </div>
+        <div class="media-body">
+          <h3>Мастер-класс: картинки для рекламы за 5 минут</h3>
+          <p>Прямой эфир, где с нуля сгенерировали рекламный креатив без дизайнера и фотостоков.</p>
+          <span class="media-link">Смотреть
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </span>
+        </div>
+      </a>
+      <!-- Статья -->
+      <a href="#" class="media-card reveal" target="_blank" rel="noopener">
+        <div class="media-banner media-b6">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+          <span class="src-badge">Forbes</span>
+        </div>
+        <div class="media-body">
+          <h3>Как малый бизнес выживает с помощью AI</h3>
+          <p>Кейсы предпринимателей, которые сократили расходы и выросли, внедрив нейросети в рутину.</p>
+          <span class="media-link">Читать
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ КАТАЛОГ УРОКОВ ============ -->
+<section id="lessons">
+  <div class="glow-blob glow-cyan" style="width:380px;height:380px;bottom:40px;left:-120px"></div>
+  <div class="container">
+    <span class="eyebrow reveal">Каталог уроков</span>
+    <h2 class="section-title reveal">Темы уроков — как полки в шкафу</h2>
+    <p class="section-sub reveal">Выберите тему — внутри откроются только нужные решения. Так удобно, даже когда уроков сотни.</p>
+
+    <!-- ВИД 1: ТЕМЫ (полки) -->
+    <div class="themes-grid" id="themesView"><!-- рендерится из JS --></div>
+
+    <!-- ВИД 2: УРОКИ ВНУТРИ ВЫБРАННОЙ ТЕМЫ -->
+    <div id="lessonsView" style="display:none">
+      <div class="lessons-bar">
+        <button class="back-btn" id="backToThemes">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          Все темы
+        </button>
+        <div class="lessons-bar-title"><span id="openThemeName"></span><span class="count-pill" id="openThemeCount"></span></div>
+        <div class="lessons-search">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="lessonSearch" type="text" placeholder="Поиск урока в теме…">
+        </div>
+      </div>
+      <div class="lessons-grid" id="lessonsGrid"><!-- карточки рендерятся из JS --></div>
+      <p class="no-results" id="noResults" style="display:none">По запросу ничего не нашлось — попробуйте другое слово.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ КАК ЭТО РАБОТАЕТ ============ -->
+<section id="how">
+  <div class="container">
+    <span class="eyebrow reveal">Как это работает</span>
+    <h2 class="section-title reveal">Три шага до результата</h2>
+    <p class="section-sub reveal">Никаких сложностей. От выбора урока до результата — меньше дня.</p>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <div class="step-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </div>
+        <h3>Выбираете урок</h3>
+        <p>Находите свою задачу в каталоге. Каждый урок решает что-то конкретное — выбирайте по результату, который нужен.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <div class="step-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H8l-4 4z"/><path d="M9 9h6M9 12h4"/></svg>
+        </div>
+        <h3>Оставляете заявку</h3>
+        <p>Жмёте «Получить урок», заполняете короткую форму. Я связываюсь с вами в удобном мессенджере в течение 2 часов.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <div class="step-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10l2.5 2.5L16 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Получаете результат</h3>
+        <p>После оплаты — доступ к видео и всем материалам: промпты, шаблоны, чек-листы. Смотрите и применяете.</p>
+      </div>
+    </div>
+    <div class="notice notice-center reveal">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span><strong>Защита от пиратства.</strong> Каждый урок маркируется персональным идентификатором покупателя. Распространение запрещено и отслеживается.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="container">
+    <span class="eyebrow reveal">Частые вопросы</span>
+    <h2 class="section-title reveal">Отвечаю на то, о чём вы думаете</h2>
+    <div class="faq-wrap" id="faq">
+      <div class="faq-item reveal">
+        <button class="faq-q">Как проходит оплата?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="faq-a"><p>После заявки я свяжусь с вами и пришлю реквизиты для оплаты — банковской картой РФ или по СБП. Как только оплата пройдёт, сразу открываю доступ к уроку. Всё прозрачно, никаких скрытых платежей.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">В каком формате урок?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="faq-a"><p>Это видеозапись на 10–20 минут, где я показываю весь процесс на экране — пошагово, без перемотки важного. К видео идут материалы: готовые промпты, шаблоны и чек-лист. Смотреть можно сколько угодно раз.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">Можно ли вернуть деньги?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="faq-a"><p>Да. Если урок вам не зашёл — напишите мне в течение 3 дней после покупки, и я верну деньги без лишних вопросов. Я уверен в пользе, поэтому не держусь за тех, кому не подошло.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">Как получу доступ?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="faq-a"><p>После оплаты пришлю ссылку на видео и материалы в выбранный вами мессенджер — Макс, VK или Telegram. Доступ остаётся у вас навсегда, можно пересматривать в любое время.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">Я совсем новичок. Получится?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <div class="faq-a"><p>Именно для вас всё и сделано. Я объясняю с нуля, без терминов и сложностей — показываю каждый клик. Если умеете пользоваться браузером, справитесь точно.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ОБУЧЕНИЕ (СКРЫТАЯ СЕКЦИЯ) ============ -->
+<!-- ОБУЧЕНИЕ: заменить класс на видимый (убрать hidden-section или поставить display:block) когда раздел готов -->
+<section id="training" class="hidden-section">
+  <div class="container">
+    <span class="eyebrow">Обучение</span>
+    <h2 class="section-title">Хотите глубже? Приходите на обучение</h2>
+    <p class="section-sub">Когда одного урока мало — выбирайте формат под себя. От интенсива до личного наставничества.</p>
+    <div class="training-grid">
+      <div class="training-card">
+        <span class="fmt">Онлайн · Группа</span>
+        <h3>Интенсив «AI за выходные»</h3>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>2 дня по 4 часа, онлайн</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Группа до 12 человек</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Запись + материалы навсегда</li>
+        </ul>
+        <div class="price">15 000 <span>₽</span></div>
+        <button class="btn btn-primary btn-block">Записаться</button>
+      </div>
+      <div class="training-card">
+        <span class="fmt">Очно · Группа</span>
+        <h3>Воркшоп в Москве</h3>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>1 день, 6 часов вживую</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Практика на ваших задачах</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Кофе, нетворкинг, сертификат</li>
+        </ul>
+        <div class="price">25 000 <span>₽</span></div>
+        <button class="btn btn-primary btn-block">Записаться</button>
+      </div>
+      <div class="training-card">
+        <span class="fmt">Онлайн · Индивидуально</span>
+        <h3>Личное наставничество</h3>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>4 недели, 1-на-1</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Программа под вашу задачу</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Поддержка в чате 24/7</li>
+        </ul>
+        <div class="price">60 000 <span>₽</span></div>
+        <button class="btn btn-primary btn-block">Записаться</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ПОДВАЛ ============ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-about">
+        <a href="#hero" class="logo"><span class="logo-mark">АС</span>Нейро<span style="color:var(--primary-soft)">.</span>Эксперт</a>
+        <p>Короткие практические уроки по нейросетям. Беру одну задачу — показываю готовое решение. Без воды, без курсов на 40 часов.</p>
+      </div>
+      <div class="foot-contacts">
+        <h4>Связаться со мной</h4>
+        <div class="socials">
+          <!-- Макс (Max) -->
+          <a href="https://max.ru/u/f9LHodD0cOJAwyTr83x_tgDfub4vZhc12_0liMrmCuyuCjUVFfkl5z8EGCM" class="social" target="_blank" rel="noopener">
+            <span class="ic">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><path d="M4 4l16 8-16 8 4-8z"/></svg>
+            </span>Написать в Макс</a>
+          <!-- Telegram -->
+          <a href="https://t.me/Alexey_Sampilov" class="social" target="_blank" rel="noopener">
+            <span class="ic">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#229ED9"><path d="M21.8 4.2L2.9 11.5c-1.1.4-1.1 1.5-.2 1.8l4.8 1.5L19.4 7c.5-.4 1-.2.6.2l-9.3 8.4-.3 4.4c.5 0 .7-.2 1-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.5c.3-1.2-.5-1.8-1.4-1.4z"/></svg>
+            </span>Написать в Telegram</a>
+          <!-- Email — копирование в буфер по клику -->
+          <button type="button" class="social" id="copyEmail" data-email="alllexey@gmail.com">
+            <span class="ic">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted-light)" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            </span><span class="email-text">alllexey@gmail.com</span><span class="copy-hint">Скопировано ✓</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Нейро.Эксперт. Все права защищены.</span>
+      <span><a href="#" style="color:var(--muted)">Политика конфиденциальности</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ МОДАЛКА ЗАЯВКИ ============ -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Закрыть окно">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div id="modalForm">
+      <div class="modal-eyebrow">Заявка на урок</div>
+      <h3 id="modalTitle">Заберите решение</h3>
+      <div class="modal-summary">
+        <span class="l-name" id="sumName">—</span>
+        <span class="l-price" id="sumPrice">—</span>
+      </div>
+      <div class="notice" style="margin-bottom:18px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Каждый урок маркируется персональным идентификатором покупателя. Распространение запрещено и отслеживается.</span>
+      </div>
+      <form id="leadForm" novalidate>
+        <input type="hidden" id="fLesson" name="lesson">
+        <input type="hidden" id="fPrice" name="price">
+        <div class="field">
+          <label for="fName">Ваше имя <span class="req">*</span></label>
+          <input type="text" id="fName" name="name" placeholder="Как к вам обращаться" autocomplete="name">
+          <div class="err-msg">Пожалуйста, укажите имя</div>
+        </div>
+        <div class="field">
+          <label for="fContact">Телефон или email <span class="req">*</span></label>
+          <input type="text" id="fContact" name="contact" placeholder="+7 900 123-45-67 или you@mail.ru" autocomplete="tel">
+          <div class="err-msg" id="contactErr">Укажите телефон или email для связи</div>
+        </div>
+        <div class="field">
+          <label>Удобный мессенджер</label>
+          <div class="radio-group">
+            <div class="radio-opt">
+              <input type="radio" id="mMax" name="messenger" value="Макс" checked>
+              <label for="mMax">Макс</label>
+            </div>
+            <div class="radio-opt">
+              <input type="radio" id="mVk" name="messenger" value="VK">
+              <label for="mVk">VK</label>
+            </div>
+            <div class="radio-opt">
+              <input type="radio" id="mTg" name="messenger" value="Telegram">
+              <label for="mTg">Telegram</label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Отправить заявку</button>
+        <p class="modal-policy">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой конфиденциальности</a></p>
+      </form>
+    </div>
+    <div class="modal-success" id="modalSuccess" style="display:none">
+      <div class="check">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h3>Заявка отправлена!</h3>
+      <p>Свяжусь с вами в течение 2 часов в выбранном мессенджере. До скорого 👋</p>
+      <div class="success-links">
+        <a href="https://t.me/Alexey_Sampilov" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M21.8 4.2L2.9 11.5c-1.1.4-1.1 1.5-.2 1.8l4.8 1.5L19.4 7c.5-.4 1-.2.6.2l-9.3 8.4-.3 4.4c.5 0 .7-.2 1-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.5c.3-1.2-.5-1.8-1.4-1.4z"/></svg>
+          Написать в Telegram</a>
+        <a href="https://max.ru/u/f9LHodD0cOJAwyTr83x_tgDfub4vZhc12_0liMrmCuyuCjUVFfkl5z8EGCM" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l16 8-16 8 4-8z"/></svg>
+          Написать в Макс</a>
+      </div>
+      <button class="btn btn-ghost btn-block" id="successClose">Отлично</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   НАСТРОЙКИ ОТПРАВКИ ЗАЯВОК
+   ------------------------------------------------------------
+   Заявка уходит автоматически в Telegram-бота и/или на email.
+   Заполните значения ниже — без них сработает запасной mailto.
+
+   1) TELEGRAM (рекомендуется — приходит мгновенно):
+      - Напишите @BotFather в Telegram → /newbot → получите ТОКЕН
+      - Напишите своему боту любое сообщение, затем откройте:
+        https://api.telegram.org/bot<ТОКЕН>/getUpdates
+        и найдите "chat":{"id": ВАШ_CHAT_ID }
+      - Вставьте botToken и chatId ниже.
+      Сообщения будут приходить вам (@Alexey_Sampilov) в Telegram.
+
+   2) EMAIL (alllexey@gmail.com):
+      - Самый простой путь — Formspree (formspree.io):
+        зарегистрируйтесь на alllexey@gmail.com, создайте форму,
+        вставьте её endpoint в email.endpoint ниже.
+      - Либо Google Apps Script, который шлёт письмо на ваш ящик.
+
+   3) MAX: открытого API для автоотправки нет, поэтому в окне
+      «Заявка отправлена» есть прямая кнопка «Написать в Макс».
+   ============================================================ */
+const CONFIG = {
+  telegram: { botToken: 'PASTE_BOT_TOKEN', chatId: 'PASTE_CHAT_ID' },
+  email:    { endpoint: 'PASTE_FORMSPREE_OR_APPSCRIPT_URL' }, // напр. https://formspree.io/f/abcdwxyz
+  ownerEmail: 'alllexey@gmail.com',          // используется в запасном mailto
+  maxLink:   'https://max.ru/u/f9LHodD0cOJAwyTr83x_tgDfub4vZhc12_0liMrmCuyuCjUVFfkl5z8EGCM'
+};
+
+/* ============ ДАННЫЕ УРОКОВ ============ */
+// cat — ОДНА тема урока (определяет полку и цвет): text | image | music | business
+// tags — дополнительные подписи (необязательно)
+// ic — ключ иконки (см. ICONS ниже)
+const LESSONS = [
+  {ic:"pen",  cat:"text",     title:"Стихи в стиле Ильи Лагутенко за 10 минут", desc:"Учу нейросеть писать тексты в узнаваемом авторском стиле. Идеально для креативщиков и поздравлений, которые запомнят.", dur:"12 мин", price:1000, tags:["Креатив"]},
+  {ic:"pen",  cat:"text",     title:"Продающий пост для соцсетей по формуле", desc:"Готовый промпт-конвейер: вводите продукт — получаете цепляющий пост с заголовком, болью и призывом.", dur:"15 мин", price:1200, tags:["Для бизнеса"]},
+  {ic:"image",cat:"image",    title:"Рекламный креатив в Midjourney без дизайнера", desc:"Генерируем рекламную картинку под ваш товар: от идеи до готового изображения для VK и маркетплейсов.", dur:"18 мин", price:1500, tags:["Для бизнеса"]},
+  {ic:"image",cat:"image",    title:"Аватар и фото для профиля из текста", desc:"Делаем стильные портреты и аватары в любом стиле — для соцсетей, презентаций и личного бренда.", dur:"14 мин", price:990, tags:["Личный бренд"]},
+  {ic:"music",cat:"music",    title:"Своя песня в Suno: от идеи до трека", desc:"Пишем музыку с вокалом по вашему тексту. Поздравление, джингл для бизнеса или просто фан — за один вечер.", dur:"20 мин", price:1500, tags:["Креатив"]},
+  {ic:"mic",  cat:"music",    title:"Озвучка видео голосом-клоном", desc:"Клонируем голос и озвучиваем ролики без микрофона и студии. Для блогеров и онлайн-курсов.", dur:"16 мин", price:1800, tags:["Для бизнеса"]},
+  {ic:"bot",  cat:"business", title:"Чат-бот-ассистент для вашего бизнеса", desc:"Настраиваем AI-помощника, который отвечает клиентам и разгружает вас. Без программирования.", dur:"20 мин", price:2500, tags:["Боты"]},
+  {ic:"doc",  cat:"business", title:"Распознавание и анализ документов через AI", desc:"Загружаете договор или таблицу — нейросеть достаёт суть, делает выжимку и отвечает на вопросы.", dur:"15 мин", price:1300, tags:["Документы"]},
+  {ic:"image",cat:"image",    title:"Серия картинок в едином стиле для бренда", desc:"Создаём визуальную айдентику: набор изображений в одном стиле для всех каналов и постов.", dur:"19 мин", price:1700, tags:["Брендинг"]}
+];
+
+// Темы-«полки». Цвет здесь — единый для всех уроков темы (никакой путаницы).
+const THEMES = [
+  {id:"text",     name:"Тексты",       color:"#06B6D4", icon:"pen",   tagline:"Посты, сценарии, стихи, продающие тексты"},
+  {id:"image",    name:"Картинки",     color:"#8B5CF6", icon:"image", tagline:"Креативы, аватары, айдентика бренда"},
+  {id:"music",    name:"Музыка и звук",color:"#EC4899", icon:"music", tagline:"Песни, озвучка, джинглы, клон голоса"},
+  {id:"business", name:"Для бизнеса",  color:"#10B981", icon:"bot",   tagline:"Боты, автоматизация, анализ документов"}
+];
+
+/* ============ ИКОНКИ (SVG, единый стиль) ============ */
+const ICONS = {
+  pen:  '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>',
+  image:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
+  music:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+  mic:  '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4"/></svg>',
+  bot:  '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M8 14h.01M16 14h.01"/></svg>',
+  doc:  '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg>'
+};
+
+/* ============ БЕГУЩАЯ СТРОКА ============ */
+const TOOLS = ["ChatGPT","Midjourney","Suno","Kandinsky","Шедеврум","DALL·E","Gemini","Claude","Stable Diffusion","GigaChat","Runway","ElevenLabs"];
+(function(){
+  const track = document.getElementById('marquee');
+  const make = () => TOOLS.map(t=>`<span class="marquee-item"><span class="d"></span>${t}</span>`).join('');
+  track.innerHTML = make() + make(); // дублируем для бесшовной прокрутки
+})();
+
+/* ============ РЕНДЕР КАРТОЧЕК УРОКОВ ============ */
+const grid = document.getElementById('lessonsGrid');
+const themesView = document.getElementById('themesView');
+const lessonsView = document.getElementById('lessonsView');
+const clockSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+const arrowSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+function fmtPrice(n){return Number(n).toLocaleString('ru-RU');}
+function themeById(id){return THEMES.find(t=>t.id===id);}
+function plural(n){const a=n%10,b=n%100;
+  if(a===1&&b!==11)return 'урок';
+  if(a>=2&&a<=4&&(b<10||b>=20))return 'урока';
+  return 'уроков';}
+
+let currentTheme = null;
+
+/* ВИД 1: полки-темы */
+function renderThemes(){
+  themesView.innerHTML = THEMES.map(t=>{
+    const items = LESSONS.filter(l=>l.cat===t.id);
+    const count = items.length;
+    const minPrice = count ? Math.min(...items.map(l=>l.price)) : 0;
+    const hasHit = items.some(l=>l.hit);
+    const priceLabel = count ? `от ${fmtPrice(minPrice)} ₽` : 'скоро';
+    return `<article class="theme-card reveal" style="--c:${t.color}" data-theme="${t.id}" tabindex="0" role="button" aria-label="Открыть тему ${t.name}">
+      ${hasHit ? '<span class="theme-badge">🔥 есть хиты</span>' : ''}
+      <div class="theme-ic">${ICONS[t.icon]||ICONS.pen}</div>
+      <h3>${t.name}</h3>
+      <p class="theme-tag">${t.tagline}</p>
+      <div class="theme-prices"><span class="from-price">${priceLabel}</span></div>
+      <div class="theme-foot">
+        <span class="count-pill">${count} ${plural(count)}</span>
+        <span class="theme-open">Открыть ${arrowSvg}</span>
+      </div>
+    </article>`;
+  }).join('');
+  themesView.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+}
+
+/* ВИД 2: уроки внутри темы */
+function renderLessons(themeId, query=''){
+  const t = themeById(themeId);
+  const q = query.trim().toLowerCase();
+  const list = LESSONS.filter(l => l.cat===themeId &&
+    (!q || l.title.toLowerCase().includes(q) || l.desc.toLowerCase().includes(q) ||
+      (l.tags||[]).some(tag=>tag.toLowerCase().includes(q))));
+
+  document.getElementById('openThemeCount').textContent = `${list.length} ${plural(list.length)}`;
+  document.getElementById('noResults').style.display = list.length ? 'none' : 'block';
+
+  grid.innerHTML = '';
+  list.forEach((l,i) => {
+    const card = document.createElement('article');
+    card.className = 'lesson-card reveal';
+    card.style.transitionDelay = (i%3*50)+'ms';
+    card.style.setProperty('--cat', t.color); // единый цвет темы для всех карточек
+    const ribbon = l.hit ? '<span class="ribbon ribbon-hit">🔥 Хит</span>'
+                 : l.isNew ? '<span class="ribbon ribbon-new">Новинка</span>' : '';
+    card.innerHTML = `
+      ${ribbon}
+      <div class="lesson-head">
+        <div class="lesson-ic">${ICONS[l.ic]||ICONS.pen}</div>
+        <div class="lesson-tags">${(l.tags||[]).map(tag=>`<span class="tag">${tag}</span>`).join('')}</div>
+      </div>
+      <h3>${l.title}</h3>
+      <p class="desc">${l.desc}</p>
+      <div class="lesson-meta">${clockSvg}<span>${l.dur}</span></div>
+      <div class="lesson-foot">
+        <div class="price">${fmtPrice(l.price)} <span>₽</span></div>
+        <button class="btn btn-primary lesson-btn" data-name="${l.title}" data-price="${l.price}">Получить урок</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+  grid.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+}
+
+function openTheme(id){
+  currentTheme = themeById(id);
+  if(!currentTheme) return;
+  document.getElementById('openThemeName').textContent = currentTheme.name;
+  lessonsView.style.setProperty('--c', currentTheme.color);
+  document.getElementById('lessonSearch').value = '';
+  renderLessons(id, '');
+  themesView.style.display = 'none';
+  lessonsView.style.display = 'block';
+}
+function backToThemes(){
+  lessonsView.style.display = 'none';
+  themesView.style.display = 'grid';
+  currentTheme = null;
+}
+
+/* Обработчики каталога */
+themesView.addEventListener('click', e => {
+  const c = e.target.closest('.theme-card'); if(c) openTheme(c.dataset.theme);
+});
+themesView.addEventListener('keydown', e => {
+  if((e.key==='Enter'||e.key===' ') && e.target.classList.contains('theme-card')){
+    e.preventDefault(); openTheme(e.target.dataset.theme);
+  }
+});
+document.getElementById('backToThemes').addEventListener('click', backToThemes);
+document.getElementById('lessonSearch').addEventListener('input', e => {
+  if(currentTheme) renderLessons(currentTheme.id, e.target.value);
+});
+
+/* ============ КОПИРОВАНИЕ EMAIL В БУФЕР ============ */
+const copyBtn = document.getElementById('copyEmail');
+if(copyBtn){
+  copyBtn.addEventListener('click', async () => {
+    const email = copyBtn.dataset.email;
+    try{
+      await navigator.clipboard.writeText(email);
+    }catch(e){
+      // запасной способ для старых браузеров
+      const ta = document.createElement('textarea');
+      ta.value = email; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); }catch(_){}
+      document.body.removeChild(ta);
+    }
+    copyBtn.classList.add('copied');
+    setTimeout(()=>copyBtn.classList.remove('copied'), 2000);
+  });
+}
+
+/* ============ МОДАЛКА ============ */
+const overlay = document.getElementById('modalOverlay');
+const modalForm = document.getElementById('modalForm');
+const modalSuccess = document.getElementById('modalSuccess');
+let lastFocused = null;
+
+function openModal(name, price){
+  lastFocused = document.activeElement;
+  document.getElementById('sumName').textContent = name;
+  document.getElementById('sumPrice').textContent = fmtPrice(price)+' ₽';
+  document.getElementById('fLesson').value = name;
+  document.getElementById('fPrice').value = price;
+  modalForm.style.display = 'block';
+  modalSuccess.style.display = 'none';
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(()=>document.getElementById('fName').focus(),120);
+}
+function closeModal(){
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('leadForm').reset();
+  clearState();
+  if(lastFocused) lastFocused.focus();
+}
+function clearState(){
+  document.querySelectorAll('#leadForm input').forEach(i=>i.classList.remove('error','valid'));
+}
+document.addEventListener('click', e => {
+  const lb = e.target.closest('.lesson-btn');
+  if(lb) openModal(lb.dataset.name, +lb.dataset.price);
+});
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('successClose').addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if(e.target===overlay) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape' && overlay.classList.contains('open')) closeModal(); });
+
+/* ============ ВАЛИДАЦИЯ ============ */
+const nameInput = document.getElementById('fName');
+const contactInput = document.getElementById('fContact');
+const contactErr = document.getElementById('contactErr');
+
+function classifyContact(v){
+  const s = v.trim();
+  if(!s) return {ok:false, msg:'Укажите телефон или email для связи'};
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  if(s.includes('@')){
+    return emailRe.test(s)
+      ? {ok:true}
+      : {ok:false, msg:'Похоже на email, но есть ошибка — проверьте адрес (например, name@mail.ru)'};
+  }
+  const digits = s.replace(/\D/g,'');
+  if(/[a-zA-Zа-яА-ЯёЁ]/.test(s) && digits.length < 10){
+    return {ok:false, msg:'Введите телефон (+7 900 123-45-67) или email (name@mail.ru)'};
+  }
+  if(digits.length >= 10 && digits.length <= 15) return {ok:true};
+  return {ok:false, msg:'Неполный номер. Нужно минимум 10 цифр, например +7 900 123-45-67'};
+}
+
+// Имя — проверка по ходу
+nameInput.addEventListener('input', ()=>{
+  if(nameInput.value.trim()){ nameInput.classList.remove('error'); nameInput.classList.add('valid'); }
+  else nameInput.classList.remove('valid');
+});
+// Контакт — проверка по ходу и при потере фокуса
+function checkContact(showError){
+  const res = classifyContact(contactInput.value);
+  if(res.ok){
+    contactInput.classList.remove('error'); contactInput.classList.add('valid');
+    return true;
+  }
+  contactInput.classList.remove('valid');
+  if(showError){
+    contactErr.textContent = res.msg;
+    contactInput.classList.add('error');
+  }
+  return false;
+}
+contactInput.addEventListener('blur', ()=>{ if(contactInput.value.trim()) checkContact(true); });
+contactInput.addEventListener('input', ()=>{
+  // во время ввода убираем красноту, как только стало валидно
+  if(classifyContact(contactInput.value).ok){
+    contactInput.classList.remove('error'); contactInput.classList.add('valid');
+  } else {
+    contactInput.classList.remove('valid');
+  }
+});
+
+/* ============ ОТПРАВКА ЗАЯВКИ ============ */
+async function sendTelegram(text){
+  const {botToken, chatId} = CONFIG.telegram;
+  if(!botToken || botToken.startsWith('PASTE')) return false;
+  try{
+    const r = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({chat_id: chatId, text, parse_mode:'HTML', disable_web_page_preview:true})
+    });
+    return r.ok;
+  }catch(e){ console.error('Telegram error', e); return false; }
+}
+async function sendEmail(payload){
+  const url = CONFIG.email.endpoint;
+  if(!url || url.startsWith('PASTE')) return false;
+  try{
+    const r = await fetch(url, {
+      method:'POST', headers:{'Content-Type':'application/json', Accept:'application/json'},
+      body: JSON.stringify(payload)
+    });
+    return r.ok;
+  }catch(e){ console.error('Email error', e); return false; }
+}
+function mailtoFallback(d){
+  const subject = `Заявка на урок: ${d.lesson}`;
+  const body =
+`Новая заявка с сайта:
+
+Урок: ${d.lesson}
+Цена: ${fmtPrice(d.price)} ₽
+Имя: ${d.name}
+Контакт: ${d.contact}
+Мессенджер: ${d.messenger}`;
+  window.location.href = `mailto:${CONFIG.ownerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+document.getElementById('leadForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  // финальная валидация
+  let ok = true;
+  if(!nameInput.value.trim()){ nameInput.classList.add('error'); ok=false; }
+  if(!checkContact(true)){ ok=false; }
+  if(!ok){ (nameInput.classList.contains('error')?nameInput:contactInput).focus(); return; }
+
+  const d = {
+    lesson: document.getElementById('fLesson').value,
+    price:  document.getElementById('fPrice').value,
+    name:   nameInput.value.trim(),
+    contact:contactInput.value.trim(),
+    messenger: document.querySelector('input[name="messenger"]:checked').value
+  };
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; const old = btn.textContent; btn.textContent = 'Отправляю…';
+
+  const text =
+`🔥 <b>Новая заявка на урок</b>
+
+<b>Урок:</b> ${d.lesson}
+<b>Цена:</b> ${fmtPrice(d.price)} ₽
+<b>Имя:</b> ${d.name}
+<b>Контакт:</b> ${d.contact}
+<b>Мессенджер:</b> ${d.messenger}`;
+
+  const [tg, em] = await Promise.all([ sendTelegram(text), sendEmail(d) ]);
+
+  // если ни один автоканал не настроен/не сработал — запасной mailto
+  if(!tg && !em){ mailtoFallback(d); }
+
+  btn.disabled = false; btn.textContent = old;
+
+  modalForm.style.display = 'none';
+  modalSuccess.style.display = 'block';
+});
+
+/* ============ FAQ-АККОРДЕОН ============ */
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const ans = q.nextElementSibling;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if(!isOpen){ item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; }
+  });
+});
+
+/* ============ СЧЁТЧИКИ ============ */
+function animateCount(el){
+  const target = +el.dataset.count, suffix = el.dataset.suffix || '';
+  const dur = 1400, start = performance.now();
+  function tick(now){
+    const p = Math.min((now-start)/dur, 1), eased = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.floor(eased*target).toLocaleString('ru-RU') + suffix;
+    if(p<1) requestAnimationFrame(tick);
+    else el.textContent = target.toLocaleString('ru-RU') + suffix;
+  }
+  requestAnimationFrame(tick);
+}
+const countObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ animateCount(en.target); countObserver.unobserve(en.target); } });
+},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>countObserver.observe(el));
+
+/* ============ REVEAL ============ */
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); revealObserver.unobserve(en.target); } });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+/* ============ НАВИГАЦИЯ ============ */
+const burger = document.getElementById('burger'), navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', ()=>{ const open = navLinks.classList.toggle('open'); burger.setAttribute('aria-expanded', open); });
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ navLinks.classList.remove('open'); burger.setAttribute('aria-expanded',false); }));
+window.addEventListener('scroll', ()=>{ document.getElementById('nav').classList.toggle('scrolled', window.scrollY>20); });
+
+/* ============ СТАРТ ============ */
+renderThemes();
+</script>
+</body>
+</html>
