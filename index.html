@@ -314,8 +314,8 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 }
 .lesson-card:hover{border-color:color-mix(in srgb,var(--cat) 45%,var(--border));transform:translateY(-5px)}
 .lesson-card:hover::before{transform:scaleX(1)}
-.ribbon{position:absolute;top:0;right:0;z-index:3;font-size:.72rem;font-weight:800;letter-spacing:.02em;
-  padding:6px 14px;border-bottom-left-radius:12px;color:#fff;box-shadow:0 4px 12px -4px rgba(0,0,0,.5)}
+.ribbon{position:absolute;top:0;right:0;z-index:4;font-size:.72rem;font-weight:800;letter-spacing:.02em;
+  padding:6px 14px;border-top-right-radius:var(--radius);border-bottom-left-radius:12px;color:#fff;box-shadow:0 4px 12px -4px rgba(0,0,0,.5)}
 .ribbon-hit{background:linear-gradient(135deg,#f59e0b,#ef4444)}
 .ribbon-new{background:linear-gradient(135deg,#06B6D4,#7C3AED)}
 .lesson-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -323,7 +323,9 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
   background:color-mix(in srgb,var(--cat) 16%,transparent);
   border:1px solid color-mix(in srgb,var(--cat) 40%,transparent);
   display:grid;place-items:center;color:var(--cat)}
-.lesson-tags{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.lesson-tags{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;max-width:60%}
+/* запас справа сверху, чтобы теги не залезали под ленточку «Хит/Новинка» */
+.lesson-card:has(.ribbon) .lesson-tags{padding-top:24px}
 .tag{
   font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:7px;
   background:color-mix(in srgb,var(--cat) 14%,transparent);
@@ -465,6 +467,14 @@ footer{border-top:1px solid var(--border);padding:72px 0 40px;background:var(--b
 .notice svg{color:var(--primary-soft);flex-shrink:0;margin-top:1px}
 .notice strong{color:var(--text);font-weight:700}
 .notice-center{max-width:680px;margin:36px auto 0}
+.contact-methods{display:flex;gap:10px;flex-wrap:wrap}
+.cm-opt{flex:1;min-width:96px;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 10px;border:1px solid var(--border);border-radius:11px;background:var(--bg-soft);
+  cursor:pointer;font-size:.9rem;font-weight:600;color:var(--muted-light);transition:.2s;margin:0;text-align:center}
+.cm-opt input{width:18px;height:18px;flex-shrink:0;accent-color:var(--primary);cursor:pointer}
+.cm-opt:has(input:checked){border-color:var(--primary);background:var(--grad-soft);color:var(--text)}
+.field.cm-invalid .cm-opt{border-color:#ef4444}
+.field.cm-invalid .err-msg{display:block}
 .modal-policy{font-size:.78rem;color:var(--muted);margin-top:16px;text-align:center;line-height:1.5}
 .modal-policy a{color:var(--primary-soft)}
 .modal-success{text-align:center;padding:24px 8px}
@@ -974,26 +984,18 @@ footer{border-top:1px solid var(--border);padding:72px 0 40px;background:var(--b
           <div class="err-msg">Пожалуйста, укажите имя</div>
         </div>
         <div class="field">
-          <label for="fContact">Телефон или email <span class="req">*</span></label>
-          <input type="text" id="fContact" name="contact" placeholder="+7 900 123-45-67 или you@mail.ru" autocomplete="tel">
-          <div class="err-msg" id="contactErr">Укажите телефон или email для связи</div>
+          <label for="fPhone">Телефон <span class="req">*</span></label>
+          <input type="tel" id="fPhone" name="phone" placeholder="+7 900 123-45-67" autocomplete="tel">
+          <div class="err-msg" id="phoneErr">Введите корректный номер, например +7 900 123-45-67</div>
         </div>
         <div class="field">
-          <label>Удобный мессенджер</label>
-          <div class="radio-group">
-            <div class="radio-opt">
-              <input type="radio" id="mMax" name="messenger" value="Макс" checked>
-              <label for="mMax">Макс</label>
-            </div>
-            <div class="radio-opt">
-              <input type="radio" id="mVk" name="messenger" value="VK">
-              <label for="mVk">VK</label>
-            </div>
-            <div class="radio-opt">
-              <input type="radio" id="mTg" name="messenger" value="Telegram">
-              <label for="mTg">Telegram</label>
-            </div>
+          <label>Где с вами связаться? <span class="req">*</span></label>
+          <div class="contact-methods">
+            <label class="cm-opt"><input type="checkbox" name="contact_via" value="Max"><span>Max</span></label>
+            <label class="cm-opt"><input type="checkbox" name="contact_via" value="Telegram"><span>Telegram</span></label>
+            <label class="cm-opt"><input type="checkbox" name="contact_via" value="Позвонить по телефону"><span>Позвонить по тел</span></label>
           </div>
+          <div class="err-msg" id="cmErr">Выберите хотя бы один способ связи</div>
         </div>
         <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Отправить заявку</button>
         <p class="modal-policy">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой конфиденциальности</a></p>
@@ -1043,8 +1045,8 @@ footer{border-top:1px solid var(--border);padding:72px 0 40px;background:var(--b
       «Заявка отправлена» есть прямая кнопка «Написать в Макс».
    ============================================================ */
 const CONFIG = {
-  telegram: { botToken: 'PASTE_BOT_TOKEN', chatId: 'PASTE_CHAT_ID' },
-  email:    { endpoint: 'PASTE_FORMSPREE_OR_APPSCRIPT_URL' }, // напр. https://formspree.io/f/abcdwxyz
+  telegram: { botToken: '8024798230:AAHsKOeSIAQe4UToX2t8sViAVCDDk_9J7Ac', chatId: 'PASTE_CHAT_ID' },
+  email:    { endpoint: 'https://formspree.io/f/xlgvvqkd' },
   ownerEmail: 'alllexey@gmail.com',          // используется в запасном mailto
   maxLink:   'https://max.ru/u/f9LHodD0cOJAwyTr83x_tgDfub4vZhc12_0liMrmCuyuCjUVFfkl5z8EGCM'
 };
@@ -1255,24 +1257,16 @@ document.addEventListener('keydown', e => { if(e.key==='Escape' && overlay.class
 
 /* ============ ВАЛИДАЦИЯ ============ */
 const nameInput = document.getElementById('fName');
-const contactInput = document.getElementById('fContact');
-const contactErr = document.getElementById('contactErr');
+const phoneInput = document.getElementById('fPhone');
+const phoneErr = document.getElementById('phoneErr');
+const cmField = () => document.getElementById('cmErr').closest('.field');
+function checkedMethods(){
+  return [...document.querySelectorAll('input[name="contact_via"]:checked')].map(i=>i.value);
+}
 
-function classifyContact(v){
-  const s = v.trim();
-  if(!s) return {ok:false, msg:'Укажите телефон или email для связи'};
-  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  if(s.includes('@')){
-    return emailRe.test(s)
-      ? {ok:true}
-      : {ok:false, msg:'Похоже на email, но есть ошибка — проверьте адрес (например, name@mail.ru)'};
-  }
-  const digits = s.replace(/\D/g,'');
-  if(/[a-zA-Zа-яА-ЯёЁ]/.test(s) && digits.length < 10){
-    return {ok:false, msg:'Введите телефон (+7 900 123-45-67) или email (name@mail.ru)'};
-  }
-  if(digits.length >= 10 && digits.length <= 15) return {ok:true};
-  return {ok:false, msg:'Неполный номер. Нужно минимум 10 цифр, например +7 900 123-45-67'};
+function validPhone(v){
+  const digits = v.replace(/\D/g,'');
+  return digits.length >= 10 && digits.length <= 15;
 }
 
 // Имя — проверка по ходу
@@ -1280,34 +1274,29 @@ nameInput.addEventListener('input', ()=>{
   if(nameInput.value.trim()){ nameInput.classList.remove('error'); nameInput.classList.add('valid'); }
   else nameInput.classList.remove('valid');
 });
-// Контакт — проверка по ходу и при потере фокуса
-function checkContact(showError){
-  const res = classifyContact(contactInput.value);
-  if(res.ok){
-    contactInput.classList.remove('error'); contactInput.classList.add('valid');
-    return true;
+// Телефон — проверка по ходу
+function checkPhone(showError){
+  if(validPhone(phoneInput.value)){
+    phoneInput.classList.remove('error'); phoneInput.classList.add('valid'); return true;
   }
-  contactInput.classList.remove('valid');
-  if(showError){
-    contactErr.textContent = res.msg;
-    contactInput.classList.add('error');
-  }
+  phoneInput.classList.remove('valid');
+  if(showError) phoneInput.classList.add('error');
   return false;
 }
-contactInput.addEventListener('blur', ()=>{ if(contactInput.value.trim()) checkContact(true); });
-contactInput.addEventListener('input', ()=>{
-  // во время ввода убираем красноту, как только стало валидно
-  if(classifyContact(contactInput.value).ok){
-    contactInput.classList.remove('error'); contactInput.classList.add('valid');
-  } else {
-    contactInput.classList.remove('valid');
-  }
+phoneInput.addEventListener('blur', ()=>{ if(phoneInput.value.trim()) checkPhone(true); });
+phoneInput.addEventListener('input', ()=>{
+  if(validPhone(phoneInput.value)){ phoneInput.classList.remove('error'); phoneInput.classList.add('valid'); }
+  else phoneInput.classList.remove('valid');
+});
+// Способы связи — снимаем ошибку при выборе
+document.querySelectorAll('input[name="contact_via"]').forEach(cb=>{
+  cb.addEventListener('change', ()=>{ if(checkedMethods().length) cmField().classList.remove('cm-invalid'); });
 });
 
 /* ============ ОТПРАВКА ЗАЯВКИ ============ */
 async function sendTelegram(text){
   const {botToken, chatId} = CONFIG.telegram;
-  if(!botToken || botToken.startsWith('PASTE')) return false;
+  if(!botToken || botToken.startsWith('PASTE') || !chatId || String(chatId).startsWith('PASTE')) return false;
   try{
     const r = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -1335,25 +1324,28 @@ function mailtoFallback(d){
 Урок: ${d.lesson}
 Цена: ${fmtPrice(d.price)} ₽
 Имя: ${d.name}
-Контакт: ${d.contact}
-Мессенджер: ${d.messenger}`;
+Телефон: ${d.phone}
+Способ связи: ${d.contact_via}`;
   window.location.href = `mailto:${CONFIG.ownerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 document.getElementById('leadForm').addEventListener('submit', async function(e){
   e.preventDefault();
   // финальная валидация
-  let ok = true;
-  if(!nameInput.value.trim()){ nameInput.classList.add('error'); ok=false; }
-  if(!checkContact(true)){ ok=false; }
-  if(!ok){ (nameInput.classList.contains('error')?nameInput:contactInput).focus(); return; }
+  let ok = true; let firstBad = null;
+  if(!nameInput.value.trim()){ nameInput.classList.add('error'); ok=false; firstBad=firstBad||nameInput; }
+  if(!checkPhone(true)){ ok=false; firstBad=firstBad||phoneInput; }
+  if(!checkedMethods().length){ cmField().classList.add('cm-invalid'); ok=false; }
+  if(!ok){ if(firstBad) firstBad.focus(); return; }
 
+  const methods = checkedMethods();
   const d = {
-    lesson: document.getElementById('fLesson').value,
-    price:  document.getElementById('fPrice').value,
-    name:   nameInput.value.trim(),
-    contact:contactInput.value.trim(),
-    messenger: document.querySelector('input[name="messenger"]:checked').value
+    lesson:  document.getElementById('fLesson').value,
+    price:   document.getElementById('fPrice').value,
+    name:    nameInput.value.trim(),
+    phone:   phoneInput.value.trim(),
+    contact_via: methods.join(', '),
+    _subject: `Заявка на урок: ${document.getElementById('fLesson').value}`
   };
 
   const btn = document.getElementById('submitBtn');
@@ -1365,8 +1357,8 @@ document.getElementById('leadForm').addEventListener('submit', async function(e)
 <b>Урок:</b> ${d.lesson}
 <b>Цена:</b> ${fmtPrice(d.price)} ₽
 <b>Имя:</b> ${d.name}
-<b>Контакт:</b> ${d.contact}
-<b>Мессенджер:</b> ${d.messenger}`;
+<b>Телефон:</b> ${d.phone}
+<b>Где связаться:</b> ${d.contact_via}`;
 
   const [tg, em] = await Promise.all([ sendTelegram(text), sendEmail(d) ]);
 
