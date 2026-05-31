@@ -706,9 +706,7 @@ footer{border-top:1px solid var(--border);padding:72px 0 40px;background:var(--b
   <a href="#hero" class="logo"><span class="logo-mark">АС</span>Нейро<span style="color:var(--primary-soft)">.</span>Эксперт</a>
   <div class="nav-links" id="navLinks">
     <a href="#about">Обо мне</a>
-    <a href="#media">Медиа</a>
     <a href="#lessons">Уроки</a>
-    <a href="#how">Как это работает</a>
     <a href="#training">Обучение</a>
     <a href="#faq">FAQ</a>
     <a href="#lessons" class="btn btn-primary nav-cta">Выбрать урок</a>
@@ -1454,23 +1452,26 @@ document.getElementById('leadForm').addEventListener('submit', async function(e)
   if(!ok){ if(firstBad) firstBad.focus(); return; }
 
   const methods = checkedMethods();
+  const lessonName = document.getElementById('fLesson').value;
+  const priceVal = +document.getElementById('fPrice').value;
+  const isPaid = priceVal > 0;
   const d = {
-    lesson:  document.getElementById('fLesson').value,
-    price:   document.getElementById('fPrice').value,
+    lesson:  lessonName,
+    price:   isPaid ? fmtPrice(priceVal)+' ₽' : 'обсуждается',
     name:    nameInput.value.trim(),
     phone:   phoneInput.value.trim(),
     contact_via: methods.join(', '),
-    _subject: `Заявка на урок: ${document.getElementById('fLesson').value}`
+    _subject: (isPaid ? 'Заявка на урок: ' : 'Заявка: ') + lessonName
   };
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true; const old = btn.textContent; btn.textContent = 'Отправляю…';
 
   const text =
-`🔥 <b>Новая заявка на урок</b>
+`🔥 <b>${isPaid ? 'Новая заявка на урок' : 'Новая заявка'}</b>
 
-<b>Урок:</b> ${d.lesson}
-<b>Цена:</b> ${fmtPrice(d.price)} ₽
+<b>${isPaid ? 'Урок' : 'Запрос'}:</b> ${d.lesson}
+<b>Цена:</b> ${d.price}
 <b>Имя:</b> ${d.name}
 <b>Телефон:</b> ${d.phone}
 <b>Где связаться:</b> ${d.contact_via}`;
