@@ -253,20 +253,35 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 .no-results{color:var(--muted-light);text-align:center;padding:48px 0}
 @media(max-width:980px){.themes-grid{grid-template-columns:repeat(2,1fr)}.shelf-search{margin-left:0;width:100%}.shelf-search input{width:100%}}
 /* телефон: компактная сетка 2×2 вместо гигантских плиток */
-@media(max-width:620px){
-  .themes-grid{gap:12px}
-  .theme-card{min-height:0;padding:16px 14px;gap:9px}
-  .theme-ic{width:42px;height:42px;border-radius:11px}
-  .theme-ic svg{width:20px;height:20px}
-  .theme-card h3{font-size:1.05rem}
-  .theme-tag{font-size:.8rem}
-  .from-price{font-size:.95rem}
-  .theme-badge{font-size:.62rem;padding:3px 7px;top:10px;right:10px}
-  .count-pill{font-size:.72rem;padding:4px 9px}
-  .theme-open{font-size:.8rem}
-  .theme-foot{flex-direction:column;align-items:flex-start;gap:8px}
+/* телефон: всегда 2 компактные колонки в каталоге */
+@media(max-width:680px){
+  .themes-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px}
+  .theme-card{min-height:0;padding:13px 12px;gap:7px;border-radius:14px}
+  .theme-ic{width:36px;height:36px;border-radius:10px}
+  .theme-ic svg{width:18px;height:18px}
+  .theme-card h3{font-size:.98rem}
+  .theme-tag{font-size:.76rem;line-height:1.35}
+  .from-price{font-size:.9rem}
+  .theme-prices{margin-top:2px}
+  .theme-badge{font-size:.58rem;padding:3px 6px;top:9px;right:9px}
+  .count-pill{font-size:.68rem;padding:3px 8px}
+  .theme-open{font-size:.76rem}
+  .theme-foot{flex-direction:column;align-items:flex-start;gap:7px}
+  /* уроки внутри темы — тоже 2 в ряд и компактнее */
+  .cards-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px}
+  .lesson-card{padding:13px 12px;gap:9px;border-radius:14px}
+  .lesson-card h3{font-size:.95rem;line-height:1.25}
+  .lesson-card .desc{font-size:.8rem}
+  .lesson-ic{width:36px;height:36px}
+  .lesson-ic svg{width:18px;height:18px}
+  .price{font-size:1.15rem}
+  .lesson-foot{flex-direction:column;align-items:stretch;gap:9px}
+  .lesson-foot .btn{width:100%;padding:9px 12px;font-size:.82rem}
+  .tag{font-size:.64rem;padding:3px 7px}
 }
-@media(max-width:380px){.themes-grid{grid-template-columns:1fr}}
+@media(max-width:360px){
+  .themes-grid,.cards-grid{grid-template-columns:1fr!important}
+}
 
 .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 @media(max-width:980px){.cards-grid{grid-template-columns:repeat(2,1fr)}}
