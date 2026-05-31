@@ -201,7 +201,7 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 @media(max-width:620px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
 
 /* ОТЗЫВЫ */
-.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;align-items:start}
 .review-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:14px}
 .review-stars{display:flex;gap:3px;color:#f59e0b}
 .review-text{color:var(--text);font-size:.96rem;line-height:1.6;flex-grow:1}
@@ -209,7 +209,6 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 .review-ava{width:42px;height:42px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-family:'Unbounded';font-weight:700;color:#fff;font-size:.95rem;flex-shrink:0}
 .review-author b{font-weight:700;font-size:.92rem}
 .review-author small{display:block;color:var(--muted);font-size:.82rem}
-@media(max-width:880px){.reviews-grid{grid-template-columns:1fr}}
 
 /* ФОРУМЫ */
 .forums-list{display:flex;flex-direction:column;gap:10px}
@@ -253,7 +252,21 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 .shelf-search input:focus{outline:none;border-color:var(--primary)}
 .no-results{color:var(--muted-light);text-align:center;padding:48px 0}
 @media(max-width:980px){.themes-grid{grid-template-columns:repeat(2,1fr)}.shelf-search{margin-left:0;width:100%}.shelf-search input{width:100%}}
-@media(max-width:540px){.themes-grid{grid-template-columns:1fr}}
+/* телефон: компактная сетка 2×2 вместо гигантских плиток */
+@media(max-width:620px){
+  .themes-grid{gap:12px}
+  .theme-card{min-height:0;padding:16px 14px;gap:9px}
+  .theme-ic{width:42px;height:42px;border-radius:11px}
+  .theme-ic svg{width:20px;height:20px}
+  .theme-card h3{font-size:1.05rem}
+  .theme-tag{font-size:.8rem}
+  .from-price{font-size:.95rem}
+  .theme-badge{font-size:.62rem;padding:3px 7px;top:10px;right:10px}
+  .count-pill{font-size:.72rem;padding:4px 9px}
+  .theme-open{font-size:.8rem}
+  .theme-foot{flex-direction:column;align-items:flex-start;gap:8px}
+}
+@media(max-width:380px){.themes-grid{grid-template-columns:1fr}}
 
 .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 @media(max-width:980px){.cards-grid{grid-template-columns:repeat(2,1fr)}}
@@ -463,12 +476,9 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
       <div class="about-grid">
         <div class="about-text">
           <p>Шесть лет назад я залез в нейросети из любопытства — а остался, потому что увидел, как они <strong>реально меняют работу</strong>: маркетолога, предпринимателя, креатора. Не «когда-нибудь», а прямо сейчас.</p>
-          <div class="collapsible" id="storyMore">
-            <p>За это время я перепробовал сотни инструментов и набил все шишки, которые можно. <strong>Чтобы вам не пришлось.</strong></p>
-            <p>Верю в короткие уроки-решения: одна задача — один результат. Написать тексты, сгенерить картинки, сделать музыку, автоматизировать рутину. Просто, дерзко и по делу.</p>
-            <p>Если вы новичок — объясню так, что поймёт даже ваша бабушка. Если профи — дам фишки, до которых вы дошли бы через полгода.</p>
-          </div>
-          <button class="more-btn" data-target="storyMore">Читать дальше <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+          <p>За это время я перепробовал сотни инструментов и набил все шишки, которые можно. <strong>Чтобы вам не пришлось.</strong></p>
+          <p>Верю в короткие уроки-решения: одна задача — один результат. Написать тексты, сгенерить картинки, сделать музыку, автоматизировать рутину. Просто, дерзко и по делу.</p>
+          <p>Если вы новичок — объясню так, что поймёт даже ваша бабушка. Если профи — дам фишки, до которых вы дошли бы через полгода.</p>
         </div>
         <div class="about-media">
           <img class="about-img" alt="Рабочее пространство с нейросетями" src="images/about.jpg"
