@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Алексей Сампилов — обучение нейросетям для людей и компаний</title>
-<meta name="description" content="Алексей Сампилов, аналитик данных и продвинутый пользователь нейросетей из Улан-Удэ. Обучаю людей и компании работать с ИИ: тренинги, корпоративные курсы, выступления на форумах.">
+<title>Нейро-эксперт — уроки, обучение и выступления по нейросетям</title>
+<meta name="description" content="Практические уроки по нейросетям, очное и онлайн-обучение, выступления на форумах.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -41,11 +41,6 @@ img{max-width:100%;display:block}
 .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
 .btn-ghost:hover{border-color:var(--primary-soft);background:rgba(124,58,237,.08)}
 .btn-block{width:100%}
-
-/* Временно отключённый пункт меню/плитка (серый, не кликается) */
-.locked{opacity:.5;pointer-events:none;cursor:not-allowed;filter:grayscale(.65)}
-.path-card.locked::after{content:"Скоро";position:absolute;top:10px;right:12px;z-index:3;font-size:.66rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-light);background:var(--bg-soft);border:1px solid var(--border);border-radius:999px;padding:3px 9px}
-.nav-links a.locked::after{content:"скоро";margin-left:6px;font-size:.6rem;font-weight:700;text-transform:uppercase;color:var(--muted)}
 
 /* НАВИГАЦИЯ */
 nav{position:fixed;top:16px;left:16px;right:16px;z-index:var(--z-nav);max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-radius:16px;background:rgba(14,14,22,.72);backdrop-filter:blur(16px);border:1px solid var(--border);transition:box-shadow .3s}
@@ -145,7 +140,7 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 
 /* КОНТАКТЫ */
 .contacts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.contact-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:28px 24px;border-radius:var(--radius);border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:.25s var(--ease);position:relative;text-align:left;font-family:'Manrope'}
+.contact-card{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:28px 24px;border-radius:var(--radius);border:1px solid var(--border);background:var(--card);cursor:pointer;transition:.25s var(--ease);position:relative;text-align:left;font-family:'Manrope'}
 .contact-card:hover{border-color:var(--border-glow);background:var(--card-hover);transform:translateY(-4px)}
 .contact-ic{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;margin-bottom:10px;background:color-mix(in srgb,var(--c) 16%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);color:var(--c)}
 .contact-card b{font-family:'Unbounded';font-weight:600;font-size:1.15rem}
@@ -156,9 +151,6 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 .contact-card.copied .contact-copy{opacity:1}
 .contact-card.copied{border-color:var(--cyan)}
 @media(max-width:780px){.contacts-grid{grid-template-columns:1fr}}
-.contacts-head{font-family:'Unbounded';font-weight:600;font-size:1.05rem;margin:38px 0 16px;display:flex;align-items:center;gap:12px;color:var(--text)}
-.contacts-head:first-of-type{margin-top:8px}
-.contacts-head::after{content:"";flex:1;height:1px;background:var(--border)}
 
 /* ВКЛАДКИ */
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;border-bottom:1px solid var(--border)}
@@ -205,9 +197,6 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 .gallery-item{aspect-ratio:4/3;border-radius:14px;overflow:hidden;border:1px solid var(--border);position:relative}
 .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease)}
 .gallery-item:hover img{transform:scale(1.06)}
-.gallery-cap{position:absolute;left:0;right:0;bottom:0;padding:20px 12px 10px;font-size:.78rem;font-weight:600;color:#fff;line-height:1.3;background:linear-gradient(transparent,rgba(5,5,10,.88));opacity:0;transform:translateY(6px);transition:.25s var(--ease)}
-.gallery-item:hover .gallery-cap{opacity:1;transform:none}
-@media(hover:none){.gallery-cap{opacity:1;transform:none}}
 .gallery-ph{width:100%;height:100%;display:grid;place-items:center;color:#fff;font-family:'Unbounded';font-weight:700;font-size:1.1rem}
 @media(max-width:620px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
 
@@ -264,20 +253,24 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 .no-results{color:var(--muted-light);text-align:center;padding:48px 0}
 @media(max-width:980px){.themes-grid{grid-template-columns:repeat(2,1fr)}.shelf-search{margin-left:0;width:100%}.shelf-search input{width:100%}}
 /* телефон: компактная сетка 2×2 вместо гигантских плиток */
-@media(max-width:620px){
-  .themes-grid{gap:12px}
-  .theme-card{min-height:0;padding:16px 14px;gap:9px}
-  .theme-ic{width:42px;height:42px;border-radius:11px}
-  .theme-ic svg{width:20px;height:20px}
-  .theme-card h3{font-size:1.05rem}
-  .theme-tag{font-size:.8rem}
-  .from-price{font-size:.95rem}
-  .theme-badge{font-size:.62rem;padding:3px 7px;top:10px;right:10px}
-  .count-pill{font-size:.72rem;padding:4px 9px}
-  .theme-open{font-size:.8rem}
-  .theme-foot{flex-direction:column;align-items:flex-start;gap:8px}
+/* телефон: всегда 2 компактные колонки в каталоге */
+@media(max-width:680px){
+  .themes-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px}
+  .theme-card{min-height:0;padding:13px 12px;gap:7px;border-radius:14px}
+  .theme-ic{width:36px;height:36px;border-radius:10px}
+  .theme-ic svg{width:18px;height:18px}
+  .theme-card h3{font-size:.98rem}
+  .theme-tag{font-size:.76rem;line-height:1.35}
+  .from-price{font-size:.9rem}
+  .theme-prices{margin-top:2px}
+  .theme-badge{font-size:.58rem;padding:3px 6px;top:9px;right:9px}
+  .count-pill{font-size:.68rem;padding:3px 8px}
+  .theme-open{font-size:.76rem}
+  .theme-foot{flex-direction:column;align-items:flex-start;gap:7px}
 }
-@media(max-width:380px){.themes-grid{grid-template-columns:1fr}}
+@media(max-width:360px){
+  .themes-grid{grid-template-columns:1fr!important}
+}
 
 .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 @media(max-width:980px){.cards-grid{grid-template-columns:repeat(2,1fr)}}
@@ -368,9 +361,6 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
 .field.cm-invalid .err-msg{display:block}
 .modal-policy{font-size:.78rem;color:var(--muted);margin-top:16px;text-align:center;line-height:1.5}
 .modal-policy a{color:var(--primary-soft)}
-.modal-call{display:flex;align-items:center;gap:9px;justify-content:center;margin-top:14px;padding:12px 14px;border-radius:11px;background:rgba(6,182,212,.07);border:1px dashed var(--border-glow);font-size:.9rem;color:var(--muted-light);line-height:1.4;text-align:center}
-.modal-call svg{color:var(--cyan);flex-shrink:0}
-.modal-call a{color:var(--cyan);font-weight:700;white-space:nowrap}
 .modal-success{text-align:center;padding:24px 8px}
 .modal-success .check{width:72px;height:72px;border-radius:50%;background:var(--grad);display:grid;place-items:center;margin:0 auto 22px;animation:pop .4s var(--ease)}
 @keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
@@ -414,8 +404,8 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
     <div class="container">
       <div class="hero-top">
         <div class="hero-left">
-          <h1>Работай умнее, <span class="grad">а не больше.</span></h1>
-          <p class="hero-sub">Алексей Сампилов — продвинутый пользователь нейросетей и аналитик данных. Обучаю людей и компании работать с ИИ: от текста до видео и кода. Выберите, что вам нужно — и переходите внутрь.</p>
+          <h1>Нейросети без воды. <span class="grad">Конкретный результат за 20 минут.</span></h1>
+          <p class="hero-sub">Уроки-решения, очное и онлайн-обучение, выступления на форумах. Выберите, что вам нужно — и переходите внутрь.</p>
         </div>
         <div class="hero-right">
           <div class="avatar-wrap">
@@ -426,9 +416,9 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
             </div>
           </div>
           <div class="hero-meta">
-            <div class="item"><span class="num" data-count="3">0</span><span class="lbl">года практики с ИИ</span></div>
-            <div class="item"><span class="num" data-count="3000" data-suffix="+">0</span><span class="lbl">человек обучил</span></div>
-            <div class="item"><span class="num" data-count="100" data-suffix="+">0</span><span class="lbl">компаний</span></div>
+            <div class="item"><span class="num" data-count="6">0</span><span class="lbl">лет в AI</span></div>
+            <div class="item"><span class="num" data-count="4200" data-suffix="+">0</span><span class="lbl">учеников</span></div>
+            <div class="item"><span class="num" data-count="50" data-suffix="+">0</span><span class="lbl">уроков</span></div>
           </div>
         </div>
       </div>
@@ -457,8 +447,15 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
   <!-- ПОДВАЛ -->
   <footer>
     <div class="container foot-inner">
-      <div class="foot-copy">© 2026 Алексей Сампилов · Нейро.Эксперт</div>
-      <a class="foot-copy" data-screen="contacts" style="cursor:pointer">Контакты →</a>
+      <div class="foot-socials">
+        <a class="social" href="https://max.ru/u/f9LHodD0cOJAwyTr83x_tgDfub4vZhc12_0liMrmCuyuCjUVFfkl5z8EGCM" target="_blank" rel="noopener">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><path d="M4 4l16 8-16 8 4-8z"/></svg></span>Написать в Макс</a>
+        <a class="social" href="https://t.me/Alexey_Sampilov" target="_blank" rel="noopener">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="#229ED9"><path d="M21.8 4.2L2.9 11.5c-1.1.4-1.1 1.5-.2 1.8l4.8 1.5L19.4 7c.5-.4 1-.2.6.2l-9.3 8.4-.3 4.4c.5 0 .7-.2 1-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.5c.3-1.2-.5-1.8-1.4-1.4z"/></svg></span>Написать в Telegram</a>
+        <button type="button" class="social" id="copyEmail" data-email="alllexey@gmail.com">
+          <span class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--muted-light)" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span>alllexey@gmail.com</span><span class="copy-hint">Скопировано ✓</span></button>
+      </div>
+      <div class="foot-copy">© 2026 Нейро.Эксперт</div>
     </div>
   </footer>
 </div>
@@ -482,31 +479,38 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
     <div class="tab-pane active" data-pane="story">
       <div class="about-grid">
         <div class="about-text">
-          <p>Меня зовут Алексей Сампилов, мне 44 года, живу и работаю в <strong>Улан-Удэ</strong>. Выпускник факультета экономики и управления Бурятского государственного университета.</p>
-          <p>Моя основная профессия — <strong>аналитик данных</strong>. Я понимаю, как работает ИИ изнутри, а не на уровне кнопок. Поэтому объясняю не «нажми сюда», а почему это работает именно так.</p>
-          <p>За плечами <strong>3 года ежедневной практики</strong> с нейросетями — от текста до видео и кода. Я перепробовал сотни инструментов и набил все шишки, которые можно. <strong>Чтобы вам не пришлось.</strong></p>
-          <p>«ИИ — это не магия, а инструмент. Моя задача — научить им пользоваться так, чтобы он экономил ваше время каждый день.» Если вы новичок — объясню с нуля. Если профи — дам фишки, до которых вы дошли бы через полгода.</p>
+          <p>Шесть лет назад я залез в нейросети из любопытства — а остался, потому что увидел, как они <strong>реально меняют работу</strong>: маркетолога, предпринимателя, креатора. Не «когда-нибудь», а прямо сейчас.</p>
+          <p>За это время я перепробовал сотни инструментов и набил все шишки, которые можно. <strong>Чтобы вам не пришлось.</strong></p>
+          <p>Верю в короткие уроки-решения: одна задача — один результат. Написать тексты, сгенерить картинки, сделать музыку, автоматизировать рутину. Просто, дерзко и по делу.</p>
+          <p>Если вы новичок — объясню так, что поймёт даже ваша бабушка. Если профи — дам фишки, до которых вы дошли бы через полгода.</p>
         </div>
         <div class="about-media">
           <img class="about-img" alt="Рабочее пространство с нейросетями" src="images/about.jpg"
             onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=700&q=80'}else{this.style.display='none'}">
           <div class="stats">
-            <div class="stat"><div class="num" data-count="3000" data-suffix="+">0</div><div class="lbl">человек обучил — от школьников до 70 лет</div></div>
-            <div class="stat"><div class="num" data-count="100" data-suffix="+">0</div><div class="lbl">компаний обучил применению ИИ</div></div>
+            <div class="stat"><div class="num" data-count="4200" data-suffix="+">0</div><div class="lbl">человек обучил</div></div>
+            <div class="stat"><div class="num" data-count="98" data-suffix="%">0</div><div class="lbl">доходят до результата</div></div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="tab-pane" data-pane="media">
-      <p class="section-sub" style="margin-bottom:24px">Статьи обо мне, интервью и видео с моим участием.</p>
-      <div class="media-list" id="mediaList"></div>
-      <p class="placeholder-note" id="mediaNote">📰 Сюда добавляются ссылки на статьи и видео обо мне. Заполните массив <code>MEDIA</code> в коде страницы — каждая запись станет кликабельной строкой.</p>
+      <p class="section-sub" style="margin-bottom:24px">Интервью, статьи и эфиры — познакомиться поближе.</p>
+      <div class="media-list">
+        <a href="#" class="media-row" target="_blank" rel="noopener"><span class="media-row-ic mb-yt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 00-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 00-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 002 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 002-2C23 15.8 23 12 23 12zM10 15.5v-7l6 3.5z"/></svg></span><span class="media-row-txt"><b>«AI заменит маркетологов?» — большое интервью</b><small>YouTube · где AI сильнее человека</small></span><svg class="media-row-arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <a href="#" class="media-row" target="_blank" rel="noopener"><span class="media-row-ic mb-vc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M8 9l3 6 5-8"/></svg></span><span class="media-row-txt"><b>10 нейросетей, которые окупаются за неделю</b><small>VC.ru · инструменты для бизнеса</small></span><svg class="media-row-arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <a href="#" class="media-row" target="_blank" rel="noopener"><span class="media-row-ic mb-hb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8v8M16 8v8M8 12h8"/></svg></span><span class="media-row-txt"><b>Промпт-инжиниринг: гайд для тех, кто устал гуглить</b><small>Habr · как формулировать запросы</small></span><svg class="media-row-arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <a href="#" class="media-row" target="_blank" rel="noopener"><span class="media-row-ic mb-pc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4"/></svg></span><span class="media-row-txt"><b>«Цифровой человек» — выпуск про нейро-креатив</b><small>Подкаст · творческие профессии и AI</small></span><svg class="media-row-arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <a href="#" class="media-row" target="_blank" rel="noopener"><span class="media-row-ic mb-vk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/></svg></span><span class="media-row-txt"><b>Мастер-класс: картинки для рекламы за 5 минут</b><small>VK Видео · креатив без дизайнера</small></span><svg class="media-row-arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <a href="#" class="media-row" target="_blank" rel="noopener"><span class="media-row-ic mb-fb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="media-row-txt"><b>Как малый бизнес выживает с помощью AI</b><small>Forbes · кейсы предпринимателей</small></span><svg class="media-row-arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+      </div>
     </div>
 
     <div class="tab-pane" data-pane="gallery">
-      <p class="section-sub" style="margin-bottom:24px">Фото с форумов, мастер-классов и обучений — наведите на снимок, чтобы увидеть событие.</p>
+      <p class="section-sub" style="margin-bottom:24px">Фото с конференций, мастер-классов и эфиров.</p>
       <div class="gallery-grid" id="galleryGrid"></div>
+      <p class="placeholder-note">📷 Демо-плитки. Положите фото в <code>images/gallery/</code> (1.jpg, 2.jpg…) и обновите страницу.</p>
     </div>
 
     <div class="tab-pane" data-pane="reviews">
@@ -516,8 +520,9 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
     </div>
 
     <div class="tab-pane" data-pane="forums">
-      <p class="section-sub" style="margin-bottom:24px">Форумы и события, где я выступал перед предпринимателями и студентами.</p>
+      <p class="section-sub" style="margin-bottom:24px">Конференции и события, где я выступал.</p>
       <div class="forums-list" id="forumsList"></div>
+      <p class="placeholder-note">🎤 Демо-список. Замените его в массиве <code>FORUMS</code> в коде страницы.</p>
     </div>
   </div>
 </section>
@@ -588,14 +593,12 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
   <div class="container">
     <button class="back-home" data-home><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>На главную</button>
     <span class="eyebrow">Контакты</span>
-    <h2 class="section-title">Напишите или позвоните — отвечу быстро</h2>
-    <p class="section-sub" style="margin-bottom:8px">Выберите удобный способ связи. Обычно отвечаю в течение пары часов.</p>
-
-    <div class="contacts-head">Связаться со мной напрямую</div>
+    <h2 class="section-title">Напишите мне — отвечу быстро</h2>
+    <p class="section-sub" style="margin-bottom:36px">Выберите удобный способ связи. Обычно отвечаю в течение пары часов.</p>
     <div class="contacts-grid">
-      <a class="contact-card" href="tel:+79025358181">
-        <span class="contact-ic" style="--c:#22c55e"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3.1-8.7A2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8 9.6a16 16 0 006 6l1.2-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg></span>
-        <b>+7 902 535-81-81</b><small>Позвонить или написать в Max</small>
+      <a class="contact-card" href="https://max.ru/u/f9LHodD0cOJAwyTr83x_tgDfub4vZhc12_0liMrmCuyuCjUVFfkl5z8EGCM" target="_blank" rel="noopener">
+        <span class="contact-ic" style="--c:#06B6D4"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l16 8-16 8 4-8z"/></svg></span>
+        <b>Макс</b><small>Написать в мессенджере Max</small>
         <svg class="contact-arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
       </a>
       <a class="contact-card" href="https://t.me/Alexey_Sampilov" target="_blank" rel="noopener">
@@ -608,25 +611,6 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
         <b>Email</b><small>alllexey@gmail.com</small>
         <span class="contact-copy">Скопировано ✓</span>
       </button>
-    </div>
-
-    <div class="contacts-head">Мои каналы про нейросети</div>
-    <div class="contacts-grid">
-      <a class="contact-card" href="https://max.ru/join/YkyaTk50gPZrqKDTggjzMgGyxSJobvF6LQ8CFShL0MQ" target="_blank" rel="noopener">
-        <span class="contact-ic" style="--c:#06B6D4"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l16 8-16 8 4-8z"/></svg></span>
-        <b>Канал в Max</b><small>Разборы и инструменты ИИ</small>
-        <svg class="contact-arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
-      </a>
-      <a class="contact-card" href="https://t.me/neural2024" target="_blank" rel="noopener">
-        <span class="contact-ic" style="--c:#229ED9"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M21.8 4.2L2.9 11.5c-1.1.4-1.1 1.5-.2 1.8l4.8 1.5L19.4 7c.5-.4 1-.2.6.2l-9.3 8.4-.3 4.4c.5 0 .7-.2 1-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3.1-14.5c.3-1.2-.5-1.8-1.4-1.4z"/></svg></span>
-        <b>Канал в Telegram</b><small>@neural2024</small>
-        <svg class="contact-arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
-      </a>
-      <a class="contact-card" href="https://vk.com/club234696075" target="_blank" rel="noopener">
-        <span class="contact-ic" style="--c:#4f8ff7"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/></svg></span>
-        <b>Сообщество ВКонтакте</b><small>Посты, эфиры и кейсы</small>
-        <svg class="contact-arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
-      </a>
     </div>
   </div>
 </section>
@@ -668,7 +652,6 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
           <div class="err-msg" id="cmErr">Выберите хотя бы один способ связи</div>
         </div>
         <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Отправить заявку</button>
-        <p class="modal-call"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3.1-8.7A2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.6a2 2 0 01-.5 2.1L8 9.6a16 16 0 006 6l1.2-1.1a2 2 0 012.1-.5c.8.3 1.7.5 2.6.6a2 2 0 011.7 2z"/></svg><span>Или просто позвоните мне <a href="tel:+79025358181">+7&nbsp;902&nbsp;535-81-81</a> — и мы обсудим детали</span></p>
         <p class="modal-policy">Нажимая кнопку, вы соглашаетесь с <a href="#">политикой конфиденциальности</a></p>
       </form>
     </div>
@@ -840,29 +823,9 @@ document.getElementById('backToTrainThemes').addEventListener('click',backToTrai
 /* ===== РОУТЕР ЭКРАНОВ ===== */
 const HUB=document.getElementById('hub');
 const SCREENS=['about','lessons','training','faq','contacts'];
-
-/* ===========================================================
-   ВКЛ / ВЫКЛ РАЗДЕЛ «УРОКИ»
-   false → раздел «Уроки» неактивен: пункт меню серый и не кликается,
-           плитка на главной с пометкой «Скоро», кнопка «Выбрать урок» скрыта.
-   true  → раздел снова работает как обычно.
-   Чтобы вернуть продажи уроков — поменяйте false на true ниже. ↓
-   =========================================================== */
-const LESSONS_ACTIVE = false;
-
-if(!LESSONS_ACTIVE){
-  document.querySelectorAll('[data-screen="lessons"]').forEach(el=>{
-    if(el.classList.contains('nav-cta')){el.style.display='none';return;} // прячем кнопку «Выбрать урок»
-    el.classList.add('locked');
-    el.setAttribute('aria-disabled','true');
-    el.removeAttribute('href');
-  });
-}
-
 function animateScope(scope){scope.querySelectorAll('[data-count]').forEach(el=>{if(!el.dataset.done){el.dataset.done=1;animateCount(el);}});}
 function openScreen(name){
   if(!SCREENS.includes(name))return;
-  if(name==='lessons'&&!LESSONS_ACTIVE)return; // раздел уроков временно отключён
   HUB.style.display='none';
   document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+name));
   if(name==='lessons')backToThemes();
@@ -891,37 +854,11 @@ aboutTabs.addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(!
 document.querySelectorAll('.more-btn').forEach(btn=>btn.addEventListener('click',()=>{const box=document.getElementById(btn.dataset.target);const open=box.classList.toggle('open');btn.classList.toggle('open',open);btn.firstChild.textContent=open?'Свернуть ':'Читать дальше ';}));
 
 /* ===== ГАЛЕРЕЯ / ОТЗЫВЫ / ФОРУМЫ ===== */
-/* Фото с выступлений и обучений. Чтобы добавить новое фото — положите файл в
-   images/gallery/ и допишите строку {src:"images/gallery/файл.jpg",cap:"Подпись"} ниже. */
-const GALLERY=[
-  {src:"images/gallery/nv1.jpg",cap:"Форум «Мой бизнес. Бурятия. Новая высота» · Улан-Удэ"},
-  {src:"images/gallery/nv2.jpg",cap:"Форум «Мой бизнес. Бурятия. Новая высота» · Улан-Удэ"},
-  {src:"images/gallery/nv3.jpg",cap:"Форум «Мой бизнес. Бурятия. Новая высота» · Улан-Удэ"},
-  {src:"images/gallery/bum1.jpg",cap:"Форум «Бизнес у моря» · Владивосток"},
-  {src:"images/gallery/bum2.jpg",cap:"Форум «Бизнес у моря» · Владивосток"},
-  {src:"images/gallery/bum3.jpg",cap:"Форум «Бизнес у моря» · Владивосток"},
-  {src:"images/gallery/bum4.jpg",cap:"Форум «Бизнес у моря» · Владивосток"},
-  {src:"images/gallery/bum5.jpg",cap:"Форум «Бизнес у моря» · Владивосток"},
-  {src:"images/gallery/dvfu1.jpg",cap:"Форум для студентов · ДВФУ, Владивосток"},
-  {src:"images/gallery/dvfu2.jpg",cap:"Форум для студентов · ДВФУ, Владивосток"},
-  {src:"images/gallery/s1.jpg",cap:"Форум предпринимателей · Северобайкальск"},
-  {src:"images/gallery/s2.jpg",cap:"Форум предпринимателей · Северобайкальск"},
-  {src:"images/gallery/s3.jpg",cap:"Форум предпринимателей · Северобайкальск"},
-  {src:"images/gallery/s4.jpg",cap:"Форум предпринимателей · Северобайкальск"},
-  {src:"images/gallery/s5.jpg",cap:"Форум предпринимателей · Северобайкальск"},
-  {src:"images/gallery/s6.jpg",cap:"Форум предпринимателей · Северобайкальск"},
-  {src:"images/gallery/svb1.jpg",cap:"Форум «Сделано в Бурятии»"},
-  {src:"images/gallery/svb2.jpg",cap:"Форум «Сделано в Бурятии»"},
-  {src:"images/gallery/mb_1.jpg",cap:"Обучение предпринимателей · центр «Мой бизнес»"},
-  {src:"images/gallery/mb_2.jpg",cap:"Обучение предпринимателей · центр «Мой бизнес»"},
-  {src:"images/gallery/mb_3.jpg",cap:"Обучение предпринимателей · центр «Мой бизнес»"},
-  {src:"images/gallery/mb_4.jpg",cap:"Обучение предпринимателей · центр «Мой бизнес»"},
-  {src:"images/gallery/mb_5.jpg",cap:"Обучение предпринимателей · центр «Мой бизнес»"},
-  {src:"images/gallery/mb5.jpg",cap:"Обучение предпринимателей · центр «Мой бизнес»"},
-  {src:"images/gallery/les1.jpg",cap:"Обучение школьников · МИКЭБИ"}
-];
+const GALLERY_COUNT=6;
+const galGrad=['#7C3AED,#4338ca','#0ea5e9,#06B6D4','#8b5cf6,#0ea5e9','#7C3AED,#0891b2','#6366f1,#06B6D4','#4f46e5,#7C3AED'];
 const galleryGrid=document.getElementById('galleryGrid');
-galleryGrid.innerHTML=GALLERY.map(g=>`<div class="gallery-item"><img src="${g.src}" alt="${g.cap}" loading="lazy" onerror="this.closest('.gallery-item').style.display='none'"><div class="gallery-cap">${g.cap}</div></div>`).join('');
+let gh='';for(let i=1;i<=GALLERY_COUNT;i++){const g=galGrad[(i-1)%galGrad.length];gh+=`<div class="gallery-item"><img src="images/gallery/${i}.jpg" alt="Выступление ${i}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="gallery-ph" style="display:none;background:linear-gradient(135deg,${g})">Фото ${i}</div></div>`;}
+galleryGrid.innerHTML=gh;
 const REVIEWS=[
   {text:"Брал урок по картинкам для рекламы — за вечер сделал креативы, на которые раньше уходила неделя и деньги на дизайнера.",name:"Игорь М.",role:"Предприниматель"},
   {text:"Объясняет так, что понятно с нуля. Я вообще не технарь, но всё получилось с первого раза.",name:"Светлана К.",role:"Маркетолог"},
@@ -930,33 +867,12 @@ const REVIEWS=[
 const star='<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1L12 16.8 5.7 21l2.3-7.1-6-4.5h7.6z"/></svg>';
 document.getElementById('reviewsGrid').innerHTML=REVIEWS.map(r=>`<div class="review-card"><div class="review-stars">${star.repeat(5)}</div><p class="review-text">«${r.text}»</p><div class="review-author"><div class="review-ava">${r.name.trim()[0]}</div><div><b>${r.name}</b><small>${r.role||''}</small></div></div>`).join('');
 const FORUMS=[
-  {year:"2000+",name:"«Мой бизнес. Бурятия. Новая высота»",place:"Улан-Удэ · человек в зале",role:"Спикер"},
-  {year:"300+",name:"Форум предпринимателей",place:"Северобайкальск",role:"Спикер"},
-  {year:"ДВФУ",name:"Форум для студентов",place:"Владивосток",role:"Спикер"},
-  {year:"Топ",name:"Форум «Бизнес у моря»",place:"Владивосток",role:"Спикер"},
-  {year:"10+",name:"Другие выступления",place:"Форумы, тренинги и эфиры",role:"Спикер"}
+  {year:"2025",name:"AI Conf — конференция по нейросетям",place:"Москва, Сколково",role:"Спикер"},
+  {year:"2024",name:"Digital Marketing Forum",place:"Санкт-Петербург",role:"Мастер-класс"},
+  {year:"2024",name:"Неделя предпринимательства",place:"Онлайн",role:"Спикер"},
+  {year:"2023",name:"Креативная индустрия 2023",place:"Казань",role:"Дискуссия"}
 ];
 document.getElementById('forumsList').innerHTML=FORUMS.map(f=>`<div class="forum-row"><span class="forum-year">${f.year}</span><div class="forum-info"><b>${f.name}</b><small>${f.place||''}</small></div><span class="forum-role">${f.role||''}</span></div>`).join('');
-
-/* ===== МЕДИА: статьи и видео обо мне =====
-   Добавьте записи — строки станут кликабельными. icon: 'video' | 'article' | 'podcast'
-   Пример: {icon:'video', title:'Интервью на форуме «Бизнес у моря»', source:'YouTube · о применении ИI', url:'https://...'} */
-const MEDIA=[
-  {icon:'video',   title:'Как работают нейросети и почему за ними будущее?', source:'«Заметки для Оруэлла» · VK Видео', url:'https://vkvideo.ru/video-226217008_456239073?pl=210927596_1&t=4m52s'},
-  {icon:'podcast', title:'Тёплый подкаст №6: гость Алексей Сампилов — про нейросети в работе и жизни', source:'CHIVA PRODUCTION · VK Видео', url:'https://vkvideo.ru/video-215508956_456239128?pl=210927596_1&t=50m39s'},
-  {icon:'article', title:'«Они проникли в наш быт через чёрный ход»: аналитик данных о нейросетях в Бурятии', source:'Московский комсомолец · ulan.mk.ru', url:'https://ulan.mk.ru/social/2026/01/14/oni-pronikli-v-nash-byt-cherez-chernyy-khod-analitik-dannykh-rasskazal-mogut-li-neyroseti-sdelat-zhizn-v-buryatii-proshhe.html'},
-];
-const MEDIA_IC={
-  video:'<span class="media-row-ic mb-yt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 00-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 00-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 002 2C5.3 20 12 20 12 20s6.7 0 8.5-.4a2.9 2.9 0 002-2C23 15.8 23 12 23 12zM10 15.5v-7l6 3.5z"/></svg></span>',
-  article:'<span class="media-row-ic mb-hb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>',
-  podcast:'<span class="media-row-ic mb-pc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0014 0M12 17v4"/></svg></span>'
-};
-const mediaList=document.getElementById('mediaList');
-const mediaNote=document.getElementById('mediaNote');
-if(MEDIA.length){
-  mediaList.innerHTML=MEDIA.map(m=>`<a href="${m.url||'#'}" class="media-row" target="_blank" rel="noopener">${MEDIA_IC[m.icon]||MEDIA_IC.article}<span class="media-row-txt"><b>${m.title}</b><small>${m.source||''}</small></span><svg class="media-row-arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></a>`).join('');
-  if(mediaNote)mediaNote.style.display='none';
-}
 
 /* ===== МОДАЛКА ===== */
 const overlay=document.getElementById('modalOverlay');
