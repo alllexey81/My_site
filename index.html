@@ -212,7 +212,7 @@ nav.scrolled{box-shadow:0 8px 32px -12px rgba(0,0,0,.7)}
 @media(max-width:620px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
 
 /* ОТЗЫВЫ */
-.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;align-items:start}
+.reviews-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;align-items:stretch}
 .review-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:14px}
 .review-stars{display:flex;gap:3px;color:#f59e0b}
 .review-text{color:var(--text);font-size:.96rem;line-height:1.6;flex-grow:1}
@@ -512,7 +512,7 @@ footer{border-top:1px solid var(--border);padding:40px 0;background:var(--bg-sof
     <div class="tab-pane" data-pane="reviews">
       <p class="section-sub" style="margin-bottom:24px">Что говорят те, кто уже учился у меня.</p>
       <div class="reviews-grid" id="reviewsGrid"></div>
-      <p class="placeholder-note">💬 Демо-отзывы. Замените их в массиве <code>REVIEWS</code> в коде страницы.</p>
+      <p class="placeholder-note">💬 Отзывы от реальных участников обучающих мероприятий.</p>
     </div>
 
     <div class="tab-pane" data-pane="forums">
@@ -923,18 +923,25 @@ const GALLERY=[
 const galleryGrid=document.getElementById('galleryGrid');
 galleryGrid.innerHTML=GALLERY.map(g=>`<div class="gallery-item"><img src="${g.src}" alt="${g.cap}" loading="lazy" onerror="this.closest('.gallery-item').style.display='none'"><div class="gallery-cap">${g.cap}</div></div>`).join('');
 const REVIEWS=[
-  {text:"Брал урок по картинкам для рекламы — за вечер сделал креативы, на которые раньше уходила неделя и деньги на дизайнера.",name:"Игорь М.",role:"Предприниматель"},
-  {text:"Объясняет так, что понятно с нуля. Я вообще не технарь, но всё получилось с первого раза.",name:"Светлана К.",role:"Маркетолог"},
-  {text:"Чёткие, короткие уроки без воды. Сразу применяю в работе. Лучшее вложение за последнее время.",name:"Дмитрий В.",role:"Креатор"}
-];
+  {text:"Благодарю за обучение!!! Правда, было очень содержательно и практично!!! Много полезной информации, начну по-тихоньку внедрять!!! Для меня архитектор ароматов был просто открытием!",name:"Ирина М.",role:"Предприниматель"},
+  {text:"Благодарю за мк, очень динамично и много информации. Взяла для себя новую информацию: контекстное окно, раньше не понимала, почему ответы в длинных ветках становятся несвязными; комбинирование нейронок для достижения качественного результата; уникальные плюсы китайских нейронок; плюсы использования агрегаторов; генерация видео и фото. Отдельная благодарность за промпты, наглядную демонстрацию 🙌 и вашу энергетику⚡️ ",name:"Эржена Б.",role:"Предприниматель"},
+  {text:"Алексей, спасибо большое за МК, зарядил меня, хочу теперь пробовать и пробовать 🤩",name:"Наталья Ш.",role:"Предприниматель"},
+  {text:"Добрый день. Спасибо за полезную информацию по темам семинара. Очень много полезного почерпнула. Организаторам отдельная благодарность. Желаю Вам огромных успехов.",name:"Наталья.",role:"Предприниматель"},
+  {text:"Здорово, все пробуем, получаем результат! Огромное спасибо!",name:"Светлана",role:"Предприниматель"},
+  {text:"Алексей здравствуйте. Я пока только фото делаю. Но для меня это уже огромный шаг в мир Нейросетей. Спасибо большое, человеческое.",name:"Николай",role:"Предприниматель"},
+  {text:"Я ещё приду на семинар мне одного не достаточно.",name:"Мария",role:"Учитель"},
+  {text:"Спасибо Алексей и Саржана за ваш труд и за то,что делитесь такими ценными знаниями.Очень продуктивно прошёл вчерашний день🙏",name:"Инна",role:"Предприниматель"},
+  {text:"Очень сильно было полезно. Жизнь просто в другую колею повернули)",name:"Лидия",role:"Служащий"},
+  {text:"Алексей, огромное спасибо! Это просто супер инструмент аааааа Как-же мне его не хватало. Это экономит сильно время. Конечно приходится меньше шевелить мозгами но до такого результата я сам долго бы шел.",name:"Алексей",role:"Музыкант"}
+  ];
 const star='<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1L12 16.8 5.7 21l2.3-7.1-6-4.5h7.6z"/></svg>';
-document.getElementById('reviewsGrid').innerHTML=REVIEWS.map(r=>`<div class="review-card"><div class="review-stars">${star.repeat(5)}</div><p class="review-text">«${r.text}»</p><div class="review-author"><div class="review-ava">${r.name.trim()[0]}</div><div><b>${r.name}</b><small>${r.role||''}</small></div></div>`).join('');
+document.getElementById('reviewsGrid').innerHTML=REVIEWS.map(r=>`<div class="review-card"><div class="review-stars">${star.repeat(5)}</div><p class="review-text">«${r.text}»</p><div class="review-author"><div class="review-ava">${r.name.trim()[0]}</div><div><b>${r.name}</b><small>${r.role||''}</small></div></div></div>`).join('');
 const FORUMS=[
   {year:"2000+",name:"«Мой бизнес. Бурятия. Новая высота»",place:"Улан-Удэ · человек в зале",role:"Спикер"},
   {year:"300+",name:"Форум предпринимателей",place:"Северобайкальск",role:"Спикер"},
   {year:"50+",name:"Форум для студентов",place:"Владивосток",role:"Спикер"},
   {year:"50+",name:"Форум «Бизнес у моря»",place:"Владивосток",role:"Спикер"},
-  {year:"1000+",name:"Другие выступления",place:"Форумы, тренинги и эфиры",role:"Спикер"}
+  {year:"Х+",name:"Другие выступления",place:"Форумы, тренинги и эфиры",role:"Спикер"}
 ];
 document.getElementById('forumsList').innerHTML=FORUMS.map(f=>`<div class="forum-row"><span class="forum-year">${f.year}</span><div class="forum-info"><b>${f.name}</b><small>${f.place||''}</small></div><span class="forum-role">${f.role||''}</span></div>`).join('');
 
